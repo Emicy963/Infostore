@@ -237,7 +237,7 @@
                     </p>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="text-center p-4 bg-white rounded-lg">
-                            <div class="text-2xl font-bold text-primary">500+</div>
+                            <div class="text-2xl font-bold text-primary"><span class="font-bold client-counter">500+</span></div>
                             <div class="text-sm text-gray-600">Clientes Satisfeitos</div>
                         </div>
                         <div class="text-center p-4 bg-white rounded-lg">
@@ -353,6 +353,39 @@
                 });
             }
         });
+
+        // Add dynamic counter for student count
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = `+${Math.floor(start)}`;
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = `+${target}`;
+                }
+            }
+
+            updateCounter();
+        }
+
+        // Trigger counter animation when element is visible
+        const clientCounter = document.querySelector('.font-bold.client-counter');
+        if (clientCounter) {
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(clientCounter, 500);
+                        counterObserver.unobserve(entry.target);
+                    }
+                });
+            });
+
+            counterObserver.observe(clientCounter);
+        }
     </script>
 </body>
 </html>

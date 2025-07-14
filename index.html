@@ -78,8 +78,45 @@
                         </a>
                     </div>
                 </div>
-                <div class="hidden md:block">
-                    <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Computador Moderno" class="rounded-lg shadow-2xl">
+
+                <!-- Carousel Container -->
+                <div class="relative">
+                    <div class="carousel-container overflow-hidden rounded-lg shadow-2xl">
+                        <div class="carousel-track flex transition-transform duration-500 ease-in-out">
+                            <!-- Slide 1 -->
+                            <div class="carousel-slide w-full flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="PC Gaming Moderno" class="w-full h-80 object-cover">
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="carousel-slide w-full flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1547082299-de196ea013d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Laptop Profissional" class="w-full h-80 object-cover">
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="carousel-slide w-full flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1587614387466-0a72ca909e16?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Desktop All-in-One" class="w-full h-80 object-cover">
+                            </div>
+                            <!-- Slide 4 -->
+                            <div class="carousel-slide w-full flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Setup Completo" class="w-full h-80 object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Arrows -->
+                    <button class="carousel-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <!-- Dots Indicators -->
+                    <div class="carousel-dots flex justify-center mt-4 space-x-2">
+                        <button class="dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all" data-slide="0"></button>
+                        <button class="dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all" data-slide="1"></button>
+                        <button class="dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all" data-slide="2"></button>
+                        <button class="dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all" data-slide="3"></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -321,6 +358,58 @@
     </a>
 
     <script>
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+        const track = document.querySelector('.carousel-track');
+        const dots = document.querySelectorAll('.dot');
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update dots
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('bg-opacity-100');
+                    dot.classList.remove('bg-opacity-50');
+                } else {
+                    dot.classList.add('bg-opacity-50');
+                    dot.classList.remove('bg-opacity-100');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Event listeners
+        document.querySelector('.carousel-next').addEventListener('click', nextSlide);
+        document.querySelector('.carousel-prev').addEventListener('click', prevSlide);
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto-slide
+        setInterval(nextSlide, 3000);
+
+        // Initialize carousel
+        updateCarousel();
+
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');

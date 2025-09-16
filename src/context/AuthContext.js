@@ -16,4 +16,16 @@ export const AuthProvider = ({ children }) => {
         }
         setLoading(false);
     }, []);
+
+    const login = async (email, password) => {
+        try {
+            // Here is for request from login endpoint
+            localStorage.setItem("token", "fake-token");
+            localStorage.setItem("userEmail", email);
+            setUser({ email });
+            return { success: true };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    };
 }

@@ -1,137 +1,70 @@
-# 🖥️ Infostore - Landing Page
+# Getting Started with Create React App
 
-Uma landing page moderna e responsiva para empresa de tecnologia especializada em venda de computadores e eletrônicos em Angola.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-![Infostore Preview](https://img.shields.io/badge/Status-Live-green) ![HTML](https://img.shields.io/badge/HTML-5-orange) ![CSS](https://img.shields.io/badge/CSS-Tailwind-blue) ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
+## Available Scripts
 
-## 📲 Sobre o Projeto
+In the project directory, you can run:
 
-A **Infostore** é uma empresa angolana focada em vendas e soluções tecnológicas. Esta landing page foi desenvolvida para apresentar produtos, serviços e facilitar o contato com clientes através de uma interface clean e profissional.
+### `npm start`
 
-### ✨ Funcionalidades
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-- 🎨 **Design Responsivo** - Adaptável a todos os dispositivos
-- 📱 **Integração WhatsApp** - Contato direto via botões
-- 🛍️ **Catálogo de Produtos** - Computadores com especificações e preços em Kwanza
-- 🚀 **Performance Otimizada** - Carregamento rápido com Tailwind CSS
-- 📧 **Formulário de Contato** - Múltiplas formas de comunicação
-- 🔄 **Animações Suaves** - Transições e efeitos hover elegantes
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## 🛠️ Tecnologias Utilizadas
+### `npm test`
 
-- **HTML5** - Estrutura semântica
-- **Tailwind CSS** - Framework CSS utilitário
-- **JavaScript Vanilla** - Interações e animações
-- **Font Awesome** - Ícones profissionais
-- **Unsplash API** - Imagens placeholder de alta qualidade
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## 🚀 Como Executar
+### `npm run build`
 
-### Pré-requisitos
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- Navegador web moderno
-- Servidor local (opcional)
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-### Instalação
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-1. Clone o repositório:
+### `npm run eject`
 
-```bash
-git clone https://github.com/Emicy963/Infostore.git
-cd infostore-landing
-```
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-2. Adicione o logo da empresa:
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-```bash
-# Coloque o arquivo logo.png em:
-mkdir -p assets/images/
-# Adicione: assets/images/logo.png
-```
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-3. Abra o arquivo `index.html` no navegador ou use um servidor local:
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-```bash
-# Com Python
-python -m http.server 8000
+## Learn More
 
-# Com Node.js (http-server)
-npx http-server
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-# Com Live Server (VS Code)
-# Clique direito no index.html > Open with Live Server
-```
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-## 📁 Estrutura do Projeto
+### Code Splitting
 
-```
-infostore-landing/
-│
-├── index.html              # Página principal
-├── assets/
-│   └── images/
-│       └── logo.png        # Logo da empresa
-├── README.md               # Documentação
-├── CONTRIBUTE.md           # Guia de contribuição
-├── .gitignore              # Arquivos ignorados
-└── LICENSE                 # Licença do projeto
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-## 🎯 Públicos-Alvo
+### Analyzing the Bundle Size
 
-- 🎮 **Gamers** - Computadores gaming de alta performance
-- 👨‍💼 **Profissionais** - Laptops e workstations para negócios
-- 🎓 **Estudantes** - Equipamentos acessíveis para estudos
-- 👨‍💻 **Desenvolvedores** - Máquinas potentes para programação
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-## 🔮 Roadmap Futuro
+### Making a Progressive Web App
 
-### Fase 1 - E-commerce (Em Planejamento)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-- [ ] Sistema de carrinho de compras
-- [ ] Integração com gateway de pagamento
-- [ ] Painel administrativo
-- [ ] Gestão de estoque
-- [ ] Sistema de pedidos
+### Advanced Configuration
 
-### Fase 2 - Features Avançadas
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-- [ ] Chat ao vivo
-- [ ] Sistema de avaliações
-- [ ] Programa de fidelidade
-- [ ] App mobile (React Native)
+### Deployment
 
-## 🤝 Como Contribuir
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-Contribuições são sempre bem-vindas! Veja o arquivo [CONTRIBUTE.md](CONTRIBUTE.md) para detalhes sobre como contribuir para o projeto.
+### `npm run build` fails to minify
 
-### Formas de Contribuir
-
-- 🐛 Reportar bugs
-- 💡 Sugerir novas funcionalidades
-- 🔧 Enviar pull requests
-- 📖 Melhorar documentação
-- 🎨 Propor melhorias de design
-
-## 📞 Autor
-
-- **GitHub**: [Emicy963](https://github.com/Emicy963)
-- **Telefone**: [+244 928 301 450](https://wa.me/244928301450)
-- **Email**: [andersonpaulo931@gmail.com](andersonpaulo931@gmail.com)
-- **Linkedin**: [Anderson Cafurica](https://linkedin.com/in/anderson-cafurica)
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 🙏 Agradecimentos
-
-- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS
-- [Font Awesome](https://fontawesome.com/) - Ícones
-- [Unsplash](https://unsplash.com/) - Imagens de alta qualidade
-
----
-
-**Desenvolvido com ❤️ em Angola para o mundo**
-
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Emicy963/infostore-landing)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

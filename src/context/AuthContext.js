@@ -28,4 +28,18 @@ export const AuthProvider = ({ children }) => {
             return { success: false, error: error.message };
         }
     };
+
+    const logout = () => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("userEmail");
+        setUser(null);
+    };
+
+    return (
+        <AuthContext.Provider value={{ user, login, logout, loading}}>
+            {children}
+        </AuthContext.Provider>
+    )
 }
+
+export const useAuth = () => useContext(AuthContext);

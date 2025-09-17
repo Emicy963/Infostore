@@ -45,4 +45,13 @@ export const CartProvider = ({ childen }) => {
             console.error("Error updating cart item:", error);
         }
     };
+
+    const removeCartItem = async (itemId) => {
+        try {
+            await api.delete(`/delete_cartitem/${itemId}`);
+            fetchCart();
+        } catch (error) {
+            console.error("Error removing cart item:", error);
+        }
+    };
 }

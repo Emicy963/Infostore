@@ -3,7 +3,7 @@ import api from "../services/api";
 
 const CartContext = createContext();
 
-export const CartProvider = ({ childen }) => {
+export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState(null);
     const [cartCode, setCartCode] = useState(localStorage.getItem("cart_code") || generateCartCode());
 
@@ -54,4 +54,18 @@ export const CartProvider = ({ childen }) => {
             console.error("Error removing cart item:", error);
         }
     };
-}
+
+    return (
+        <CartContext.Provider value={{
+            cart,
+            fetchCart,
+            addToCart,
+            updateCartItemQuantity,
+            removeCartItem
+        }}>
+            {children}
+        </CartContext.Provider>
+    );
+};
+
+export const useCart = () => useContext(CartContext);

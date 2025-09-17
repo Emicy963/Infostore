@@ -1,0 +1,27 @@
+import React, { useState} from "react";
+import { Link } from "react-router-dom";
+import { userCart } from "../../context/CartContext";
+
+const Navbar = () => {
+    const [click, setClick] = useState(false);
+    const { cart } = userCart();
+
+    const handleClick = () => setClick(!click);
+
+    return (
+        <nav className="bg-white/90 backdrop-blur-md shadow-lg fixed w-full z-50 transition-all duration-300">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                    <div className="flex items-center animate-fade-in-left">
+                        <div className="hidden bg-primary text-white px-3 py-1 rounded-lg font-bold text-xl">IS</div>
+                        <Link to="/" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-gray-100">Início</Link>
+                        <Link to="/products" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-gray-100">Produtos</Link>
+                        <Link to="/categories" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-gray-100">Categorias</Link>
+                        <Link to="/about" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-gray-100">Sobre</Link>
+                        <Link to="/contact" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-gray-100">Contato</Link>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    )
+}

@@ -21,4 +21,16 @@ export const CartProvider = ({ childen }) => {
             console.error("Error fetching cart:", error);
         }
     };
+
+    const addToCart = async (productId) => {
+        try {
+            await api.post("/add_to_cart", {
+                cart_code: cartCode,
+                productId: productId
+            });
+            fetchCart();
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+        }
+    };
 }

@@ -12,4 +12,13 @@ export const CartProvider = ({ childen }) => {
         localStorage.setItem("cart_code", code);
         return code;
     }
+
+    const fetchCart = async () => {
+        try {
+            const response = await api.get(`/cart/${cartCode}`);
+            setCart(response.data);
+        } catch (error) {
+            console.error("Error fetching cart:", error);
+        }
+    };
 }

@@ -33,4 +33,16 @@ export const CartProvider = ({ childen }) => {
             console.error("Error adding to cart:", error);
         }
     };
+
+    const updateCartItemQuantity = async (itemId, quantity) => {
+        try {
+            await api.put("/update_cartitem_quantity/", {
+                item_id: itemId,
+                quantity
+            });
+            fetchCart();
+        } catch (error) {
+            console.error("Error updating cart item:", error);
+        }
+    };
 }

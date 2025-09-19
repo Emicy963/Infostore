@@ -10,4 +10,10 @@ const ProductCard = ({ product }) => {
     e.preventDefault();
     addToCart(product.id);
   };
+
+  <Link to={`/products/${product.slug}`} className="block">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover-lift animate-on-scroll product-card h-full flex flex-col">
+        <div className=""></div>
+    </div>
+  </Link>
 }

@@ -25,6 +25,14 @@ const Carousel = ({ slides }) => {
                     </div>
                 ))}
             </div>
+
+            {/* Navigation Arrows */}
+            <button onClick={prevSlide} className="carousel-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all hover:scale-110">
+                <i className="fas fa-chevron-left"></i>
+            </button>
+            <button onClick={nextSlide} className="carousel-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all hover:scale-110">
+                <i className="fas fa-chevron-right"></i>
+            </button>
         </div>
     )
 }

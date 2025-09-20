@@ -15,4 +15,16 @@ const Carousel = ({ slides }) => {
         const interval = setInterval(nextSlide, 3000);
         return () => clearInterval(interval);
     }, []);
+
+    return (
+        <div className="relative overflow-hidden rounded-lg shadow-2xl hover-lift glow">
+            <div div className="carousel-track flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100})%` }}>
+                {slides.map((slide, index) => (
+                    <div key={index} className="carousel-slide w-full flex-shrink-0">
+                        <img src={slide.image} alt={slide.title} className="w-full h-80 object-cover" />
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
 }

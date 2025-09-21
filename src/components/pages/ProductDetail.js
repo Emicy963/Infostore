@@ -31,4 +31,11 @@ const ProductDetail = () => {
             addToCart(product.id);
         }
     };
+
+    const handleQuantityChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (value >= 1) {
+            setQuantity(value);
+        }
+    };
 };

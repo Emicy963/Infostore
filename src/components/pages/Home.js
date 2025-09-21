@@ -78,6 +78,29 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Products Section */}
+            <section id="produtos" className="py-16 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12 animate-on-scroll">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nossos Produtos em <span className="text-primary">Destaque</span></h2>
+                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Descubra nossa seleção de computadores de alta qualidade, perfeitos para trabalho, estudos e entretenimento.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {products.map((product, index) => (
+                            <ProductCard key={product.id} product={product} style={{animationDelay: `${index * 0.2}s`}} />
+                        ))}
+                    </div>
+                    <div className="text-center mt-12 animate-on-scroll">
+                        <a href="tel:+244926625296" className="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block hover:scale-105 hover:shadow-lg">
+                            <i className="fab fa-whatsapp mr-2"></i>Ver Mais Produtos no WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </section>
         </div>
     )
 }

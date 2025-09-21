@@ -25,4 +25,10 @@ const ProductDetail = () => {
 
         fetchProduct();
     }, [slug]);
+
+    const handleAddToCart = () => {
+        for (let i = 0; i < quantity; i++) {
+            addToCart(product.id);
+        }
+    };
 };

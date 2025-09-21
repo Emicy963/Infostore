@@ -173,6 +173,64 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Contact Section */}
+            <section id="contacto" className="py-16 gradient-bg text-white relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-center mb-12 animate-on-scroll">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Entre em <span className="text-yellow-300">Contacto</span></h2>
+                        <p className="text-xl text-blue-100">Estamos aqui para ajudar com suas necessidades tecnológicas</p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-8">
+                        <div className="text-center animate-on-scroll hover-lift">
+                            <div className="bg-white text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 animate-bounce-in glow">
+                                <i className="fas fa-phone text-2xl"></i>
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2">Telefone</h3>
+                            <p className="text-blue-100">+244 926 625 296</p>
+                            <a href="tel:+244926625296" className="inline-block mt-2 bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+                                Ligar Agora
+                            </a>
+                        </div>
+                        <div className="text-center animate-on-scroll hover-lift" style={{animationDelay: '0.2s'}}>
+                            <div className="bg-white text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 animate-bounce-in glow">
+                                <i className="fas fa-envelope text-2xl"></i>
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2">Email</h3>
+                            <p className="text-blue-100">info@infostore.ao</p>
+                            <a href="mailto:info@infostore.ao" className="inline-block mt-2 bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+                                Enviar Email
+                            </a>
+                        </div>
+                        <div className="text-center animate-on-scroll hover-lift" style={{animationDelay: '0.4s'}}>
+                            <div className="bg-white text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 animate-bounce-in glow">
+                                <i className="fas fa-map-marker-alt text-2xl"></i>
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2">Localização</h3>
+                            <p className="text-blue-100">Luanda, Angola</p>
+                            <button className="mt-2 bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105" onClick={() =>
+                                window.open("https://maps.google.com/?q=Luanda,Angola", "_blank")}>
+                                Ver no Mapa
+                            </button>
+                        </div>
+                    </div>
+                    <div className="text-center mt-12 animate-on-scroll">
+                        <h3 className="text-2xl font-semibold mb-6">Siga-nos nas Redes Sociais</h3>
+                        <div className="flex justify-center space-x-6">
+                            <a href="https://www.facebook.com/profile.php?id=100088151083799" className="bg-white text-primary w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-100 transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                                <i className="fab fa-facebook-f text-xl"></i>
+                            </a>
+                            <a href="https://www.instagram.com/infostore_tecnology/" className="bg-white text-primary w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-100 transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                                <i className="fab fa-instagram text-xl"></i>
+                            </a>
+                            <a href="https://wa.me/244926625296" target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-green-600 transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                                <i className="fab fa-whatsapp text-xl"></i>
+                            </a>
+                        </div>
+                        <p className="text-blue-100 mt-4 animate-fade-in">@infostore_tecnology</p>
+                    </div>
+                </div>
+            </section>
         </div>
     )
 }

@@ -101,6 +101,46 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Services Section */}
+            <section id="servicos" className="py-16 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12 animate-on-scroll">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nossos <span className="text-primary">Serviços</span></h2>
+                        <p className="text-xl text-gray-600">Soluções completas para todas as suas necessidades tecnológicas</p>
+                    </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="text-center p-6 hover-lift animate-on-scroll service-card">
+                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
+                                <i className="fas fa-laptop text-3xl"></i>
+                                <h3 className="text-lg font-semibold mb-2">Venda de Computadores</h3>
+                                <p className="text-gray-600">Desktops, laptops e acessórios das melhores marcas.</p>
+                            </div>
+                            <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.2s'}}>
+                                <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
+                                    <i className="fas fa-wrench text-3xl"></i>
+                                </div>
+                                <h3 className="text-lg font-semibold mb-2">Suporte Técnico</h3>
+                                <p className="text-gray-600 text-sm">Manutenção e reparo de computadores com técnicos especializados.</p>
+                            </div>
+                            <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.4s'}}>
+                                <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
+                                    <i className="fas fa-cog text-3xl"></i>
+                                </div>
+                                <h3 className="text-lg font-semibold mb-2">Instalação</h3>
+                                <p className="text-gray-600 text-sm">Instalação de sistemas operativos e software especializado.</p>
+                            </div>
+                            <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.6s'}}>
+                                <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
+                                    <i className="fas fa-shipping-fast text-3xl"></i>
+                                    <h3 className="text-lg font-semibold mb-2">Entrega</h3>
+                                    <p className="text-gray-600 text-sm">Entrega rápida e segura em toda a região de Luanda.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     )
 }

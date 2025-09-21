@@ -231,6 +231,23 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Newsletter Section */}
+            <section className="py-16 bg-gray-100">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div className="animate-on-scroll">
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Fique por Dentro das <span className="text-primary">Novidades</span></h2>
+                        <p className="text-gray-600 mb-8">Receba as últimas ofertas e novidades tecnológicas diretamente no seu WhatsApp</p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <a href="https://wa.me/244926625296?text=Olá! Quero receber as novidades da Infostore." target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-600 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                                <i className="fab fa-whatsapp mr-2"></i>Receber Novidades
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    )
-}
+    );
+};
+
+export default Home;

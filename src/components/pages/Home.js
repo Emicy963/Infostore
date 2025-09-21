@@ -141,6 +141,38 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* About section */}
+            <section id="sobre" className="py-16 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                        <div className="animate-on-scroll">
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Sobre a <span className="text-primary">Infostore</span></h2>
+                            <p className="text-lg text-gray-600 mb-6">
+                                A Infostore é uma empresa angolana especializada em vendas e soluções tecnológicas. Atendemos desde gamers profissionais até estudantes e engenheiros, oferecendo produtos de qualidade com garantia completa.
+                            </p>
+                            <p className="text-lg text-gray-600 mb-6">
+                                Nossa missão é democratizar o acesso à tecnologia em Angola, fornecendo computadores e soluções tecnológicas com os melhores preços do mercado, sem comprometer a qualidade.
+                            </p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="text-center p-4 bg-white rounded-lg hover-lift animate-scale-in">
+                                    <div className="text-2xl font-bold text-primary animate-pulse-slow">
+                                        <span className="client-counter">500</span>+
+                                    </div>
+                                    <div className="text-sm text-gray-600">Clientes Satisfeitos</div>
+                                </div>
+                                <div className="text-center p-4 bg-white rounded-lg hover-lift animate-scale-in" style={{animationDelay: '0.2s'}}>
+                                     <div className="text-2xl font-bold text-primary animate-pulse-slow">2+</div>
+                                     <div className="text-sm text-gray-600">Anos de Experiência</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="animate-on-scroll" style={{animationDelay: '0.3s'}}>
+                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Equipe Infostore" className="rounded-lg shadow-lg hover-lift glow" />
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     )
 }

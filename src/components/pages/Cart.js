@@ -15,6 +15,12 @@ const Cart = () => {
 
         loadCart();
     }, [fetchCart]);
+
+    const handleQuantityChange = (itemId, newQuantity) => {
+        if (newQuantity >= 1) {
+            updateCartItemQuantity(itemId, newQuantity);
+        }
+    };
 };
 
 export default Cart;

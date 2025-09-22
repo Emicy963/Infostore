@@ -49,6 +49,20 @@ const ProductDetail = () => {
             </div>
         );
     }
+
+    if (!product) {
+        return (
+            <div className="pt-16 pb-12 bg-gray-50 min-h-screen flex items-center justify-center">
+                <div className="bg-white rounded-lg shadow-lg p-12 text-center max-w-md">
+                    <h2 className="text-2xl font-semibold mb-4">Produto não encontrado</h2>
+                    <p className="text-gray-600 mb-6">O produto que você está procurando não existe ou foi removido.</p>
+                    <Link to="/products" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block">
+                        Ver todos os produtos
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 };
 
 export default ProductDetail;

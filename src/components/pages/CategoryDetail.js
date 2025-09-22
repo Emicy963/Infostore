@@ -49,6 +49,39 @@ const CategoryDetail = () => {
             </div>
         );
     }
+
+    return (
+        <div className="pt-16 pb-12 bg-gray-50 min-h-screen">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mb-6">
+                    <Link to="/categories" className="inline-flex items-center text-primary hover:text-primary-dark">
+                        <i className="fas fa-arrow-left mr-2"></i> Voltar para categorias
+                    </Link>
+                </div>
+
+                <div className="mb-12">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{category.name}</h1>
+                    <p className="text-xl text-gray-600">{category.description}</p>
+                </div>
+
+                {products.length > 0 ? (
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {products.map((product) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+                        <h2 className="text-2xl font-semibold mb-4">Nenhum produto encontrado</h2>
+                        <p className="text-gray-600 mb-6">No momento não temos produtos nesta categoria.</p>
+                        <Link to="/products" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block">
+                        Ver todos os produtos
+                        </Link>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default CategoryDetail;

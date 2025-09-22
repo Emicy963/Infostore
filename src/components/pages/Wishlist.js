@@ -1,9 +1,8 @@
-// src/components/pages/Wishlist.js
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaHeart, FaShoppingCart, FaTrash } from 'react-icons/fa';
-import { useCart } from '../../contexts/CartContext';
-import { useAuth } from '../../contexts/AuthContext';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { useCart } from "../../contexts/CartContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
@@ -43,7 +42,7 @@ const Wishlist = () => {
         setWishlistItems(mockWishlist);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching wishlist:', error);
+        console.error("Error fetching wishlist:", error);
         setLoading(false);
       }
     };

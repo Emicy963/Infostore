@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { FaShoppingCart, FaHeart, FaStar, FaSatrHalfAlt, FaArrowLeft } from "react-icons/fa";
+import { FaShoppingCart, FaHeart, FaStar, FaStarHalfAlt, FaArrowLeft } from "react-icons/fa";
 import api from "../../services/api";
 import { useCart } from "../../context/CartContext";
 
@@ -128,6 +128,55 @@ const ProductDetail = () => {
                                 </ul>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                {/* Reviews Section */}
+                <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Avaliações</h2>
+                    
+                    {product.reviews && product.reviews.length > 0 ? (
+                        <div className="space-y-6">
+                            {product.reviews.map((review) => (
+                                <div key={review.id} className="border-b pb-6">
+                                    <div className="flex justify-between mb-2">
+                                        <h3 className="font-semibold">{review.user}</h3>
+                                        <div className="flex text-yellow-400">
+                                            {[...Array(5)].map((_, i) => (
+                                                <FaStar key={i} className={i < review.rating ? 'text-yellow-400' : 'text-gray-300'} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <p className="text-gray-600">{review.comment}</p>
+                                    <p className="text-gray-400 text-sm mt-2">{review.created_at}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-gray-600 mb-6">Este produto ainda não possui avaliações.</p>
+                    )}
+
+                    <div className="mt-8">
+                        <h3 className="text-xl font-semibold mb-4">Deixe sua Avaliação</h3>
+                        <form>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 mb-2">Avaliação</label>
+                                <div className="flex text-2xl">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button key={star} type="button" className="text-gray-300 hover:text-yellow-400 focus:outline-none mr-1">
+                                            <FaStar />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 mb-2">Comentário</label>
+                                <textarea className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" rows="4"></textarea>
+                            </div>
+                            <button type="submit" className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300">
+                                Enviar Avaliação
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

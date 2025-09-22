@@ -25,6 +25,11 @@ const Cart = () => {
     const handleRemoveItem = (itemId) => {
         removeCartItem(itemId);
     };
+
+    const calculateTotal = () => {
+        if (!cart || !cart.items) return 0;
+        return cart.items.reduce((total, item) => total + (item.product.price *item.quantity), 0);
+    }
 };
 
 export default Cart;

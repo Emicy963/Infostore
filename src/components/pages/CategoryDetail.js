@@ -35,6 +35,20 @@ const CategoryDetail = () => {
             </div>
         );
     }
+
+    if (!category) {
+        return (
+            <div className="pt-16 pb-12 bg-gray-50 min-h-screen flex items-center justify-center">
+                <div className="bg-white rounded-lg shadow-lg p-12 text-center max-w-md">
+                    <h2 className="text-2xl font-semibold mb-4">Categoria não encontrada</h2>
+                    <p className="text-gray-600 mb-6">A categoria que você está procurando não existe ou foi removida.</p>
+                    <Link to="/categories" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block">
+                        Ver todas as categorias
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 };
 
 export default CategoryDetail;

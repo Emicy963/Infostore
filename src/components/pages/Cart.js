@@ -21,6 +21,10 @@ const Cart = () => {
             updateCartItemQuantity(itemId, newQuantity);
         }
     };
+
+    const handleRemoveItem = (itemId) => {
+        removeCartItem(itemId);
+    };
 };
 
 export default Cart;

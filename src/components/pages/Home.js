@@ -16,12 +16,12 @@ const Home = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-        try {
-            const response = await api.get("/product_list");
-            setProducts(response.data);
-        } catch (error) {
-            console.error("Error fetching products:", error);
-        }
+            try {
+                const response = await api.get("/product_list");
+                setProducts(response.data);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
         };
 
         fetchProducts();
@@ -41,15 +41,15 @@ const Home = () => {
                             <p className="text-xl mb-8 text-blue-100 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
                                 Na Infostore, oferecemos os melhores computadores e soluções tecnológicas em Angola. Qualidade, garantia e suporte técnico especializado.
                             </p>
-                                <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-                                    <a href="#produtos" className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 text-center hover:scale-105 hover:shadow-lg">
+                            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+                                <a href="#produtos" className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 text-center hover:scale-105 hover:shadow-lg">
                                     Ver Produtos
-                                    </a>
-                                    <a href="tel:+244926625296" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all duration-300 text-center hover:scale-105 hover:shadow-lg">
+                                </a>
+                                <a href="tel:+244926625296" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all duration-300 text-center hover:scale-105 hover:shadow-lg">
                                     <i className="fas fa-phone mr-2"></i>Ligar Agora
-                                    </a>
-                                </div>
+                                </a>
                             </div>
+                        </div>
                         <div className="relative animate-on-scroll">
                             <Carousel slides={slides} />
                         </div>
@@ -58,12 +58,19 @@ const Home = () => {
             </section>
 
             {/* Features */}
-            <section>
+            <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="text-center p-6 hover-lift animate-on-scroll">
                             <div className="bg-primary-light text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-in glow">
                                 <i className="fas fa-shield-alt text-2xl"></i>
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2">Garantia Completa</h3>
+                            <p className="text-gray-600">Todos os nossos produtos vêm com garantia completa e suporte técnico especializado.</p>
+                        </div>
+                        <div className="text-center p-6 hover-lift animate-on-scroll" style={{animationDelay: "0.2s"}}>
+                            <div className="bg-primary-light text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-in glow">
+                                <i className="fas fa-truck text-2xl"></i>
                             </div>
                             <h3 className="text-xl font-semibold mb-2">Entrega Rápida</h3>
                             <p className="text-gray-600">Entregamos em toda Luanda com rapidez e segurança diretamente na sua casa ou escritório.</p>
@@ -102,7 +109,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Services Section */}
+            {/* Services Section - Corrigido */}
             <section id="servicos" className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12 animate-on-scroll">
@@ -113,30 +120,30 @@ const Home = () => {
                         <div className="text-center p-6 hover-lift animate-on-scroll service-card">
                             <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
                                 <i className="fas fa-laptop text-3xl"></i>
-                                <h3 className="text-lg font-semibold mb-2">Venda de Computadores</h3>
-                                <p className="text-gray-600">Desktops, laptops e acessórios das melhores marcas.</p>
                             </div>
-                            <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.2s'}}>
-                                <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
-                                    <i className="fas fa-wrench text-3xl"></i>
-                                </div>
-                                <h3 className="text-lg font-semibold mb-2">Suporte Técnico</h3>
-                                <p className="text-gray-600 text-sm">Manutenção e reparo de computadores com técnicos especializados.</p>
+                            <h3 className="text-lg font-semibold mb-2">Venda de Computadores</h3>
+                            <p className="text-gray-600 text-sm">Ampla variedade de desktops e laptops para todas as necessidades.</p>
+                        </div>
+                        <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.2s'}}>
+                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
+                                <i className="fas fa-wrench text-3xl"></i>
                             </div>
-                            <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.4s'}}>
-                                <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
-                                    <i className="fas fa-cog text-3xl"></i>
-                                </div>
-                                <h3 className="text-lg font-semibold mb-2">Instalação</h3>
-                                <p className="text-gray-600 text-sm">Instalação de sistemas operativos e software especializado.</p>
+                            <h3 className="text-lg font-semibold mb-2">Suporte Técnico</h3>
+                            <p className="text-gray-600 text-sm">Manutenção e reparo de computadores com técnicos especializados.</p>
+                        </div>
+                        <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.4s'}}>
+                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
+                                <i className="fas fa-cog text-3xl"></i>
                             </div>
-                            <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.6s'}}>
-                                <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
-                                    <i className="fas fa-shipping-fast text-3xl"></i>
-                                    <h3 className="text-lg font-semibold mb-2">Entrega</h3>
-                                    <p className="text-gray-600 text-sm">Entrega rápida e segura em toda a região de Luanda.</p>
-                                </div>
+                            <h3 className="text-lg font-semibold mb-2">Instalação</h3>
+                            <p className="text-gray-600 text-sm">Instalação de sistemas operativos e software especializado.</p>
+                        </div>
+                        <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.6s'}}>
+                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
+                                <i className="fas fa-shipping-fast text-3xl"></i>
                             </div>
+                            <h3 className="text-lg font-semibold mb-2">Entrega</h3>
+                            <p className="text-gray-600 text-sm">Entrega rápida e segura em toda a região de Luanda.</p>
                         </div>
                     </div>
                 </div>
@@ -162,8 +169,8 @@ const Home = () => {
                                     <div className="text-sm text-gray-600">Clientes Satisfeitos</div>
                                 </div>
                                 <div className="text-center p-4 bg-white rounded-lg hover-lift animate-scale-in" style={{animationDelay: '0.2s'}}>
-                                     <div className="text-2xl font-bold text-primary animate-pulse-slow">2+</div>
-                                     <div className="text-sm text-gray-600">Anos de Experiência</div>
+                                    <div className="text-2xl font-bold text-primary animate-pulse-slow">2+</div>
+                                    <div className="text-sm text-gray-600">Anos de Experiência</div>
                                 </div>
                             </div>
                         </div>

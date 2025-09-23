@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Carousel from "../common/Carousel";
 import ProductCard from "../common/ProductCard";
 import api from "../../services/api";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 const Home = () => {
     const [products, setProducts] = useState([]);

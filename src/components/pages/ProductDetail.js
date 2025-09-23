@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaShoppingCart, FaHeart, FaStar, FaStarHalfAlt, FaArrowLeft } from "react-icons/fa";
 import api from "../../services/api";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 const ProductDetail = () => {
     const { slug } = useParams();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 // import { useAuth } from "../../contexts/AuthContext";
 
 const Wishlist = () => {

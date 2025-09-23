@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();

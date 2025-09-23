@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes, FaShoppingCart, FaHeart, FaSearch } from "react-icons/fa";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);

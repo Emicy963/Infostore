@@ -5,7 +5,7 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState(null);
-    const [cartCode, setCartCode] = useState(localStorage.getItem("cart_code") || generateCartCode());
+    const [cartCode] = useState(localStorage.getItem("cart_code") || generateCartCode());
 
     function generateCartCode() {
         const code = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

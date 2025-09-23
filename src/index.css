@@ -2,22 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
+.animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+.animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
 .gradient-bg {
-  background: linear-gradient(-45deg, #1e3a8a, #1e40af, #3b82f6, #60a5fa);
-  background-size: 400% 400%;
-  animation: gradient 6s ease infinite;
-}
+            background: linear-gradient(-45deg, #1e3a8a, #1e40af, #3b82f6, #60a5fa);
+            background-size: 400% 400%;
+            animation: gradient 6s ease infinite;
+        }
+        
+.hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+.hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+.glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+.typing-effect {
+            overflow: hidden;
+            border-right: 2px solid #3b82f6;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+@keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+@keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #3b82f6 }
+        }
+        
+.particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+.glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+.parallax {
+            transform: translateZ(0);
+            will-change: transform;
+        }

@@ -15,3 +15,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.gradient-bg {
+  background: linear-gradient(-45deg, #1e3a8a, #1e40af, #3b82f6, #60a5fa);
+  background-size: 400% 400%;
+  animation: gradient 6s ease infinite;
+}

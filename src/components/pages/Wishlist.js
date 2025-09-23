@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
-import { useCart } from "../../contexts/CartContext";
-import { useAuth } from "../../contexts/AuthContext";
+import { useCart } from "../context/CartContext";
+// import { useAuth } from "../../contexts/AuthContext";
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
     // Simulação de carregamento da lista de desejos

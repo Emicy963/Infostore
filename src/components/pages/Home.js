@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import Carousel from "../common/Carousel";
 import ProductCard from "../common/ProductCard";
 import api from "../../services/api";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../context/CartContext";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
-    const [slides, setSlides] = useState([
+    const [slides] = useState([
         { image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", title: "PC Gaming Moderno" },
         { image: "https://images.unsplash.com/photo-1547082299-de196ea013d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", title: "Laptop Profissional" },
         { image: "https://images.unsplash.com/photo-1587614387466-0a72ca909e16?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", title: "Desktop All-in-One" },

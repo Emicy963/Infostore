@@ -14,30 +14,30 @@ import Wishlist from "./components/pages/Wishlist";
 import Search from "./components/pages/Search";
 
 function App() {
-    return (
-        <AuthProvider>
-            <CartProvider>
-                <Router>
-                    <div className="flex flex-col min-h-screen">
-                        <Navbar />
-                        <main className="flex-grow">
-                            <Routes>
-                                <Route path="/" element={<Home />} />
-                                <Route path="/products" element={<ProductList />} />
-                                <Route path="/products/:slug" element={<ProductDetail />} />
-                                <Route path="/categories" element={<CategoryList />} />
-                                <Route path="/categories/:slug" element={<CategoryDetail />} />
-                                <Route path="/cart" element={<Cart />} />
-                                <Route path="/wishlist" element={<Wishlist />} />
-                                <Route path="/search" element={<Search />} />
-                            </Routes>
-                        </main>
-                        <Footer />
-                    </div>
-                </Router>
-            </CartProvider>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<ProductList />} />
+                <Route path="/products/:slug" element={<ProductDetail />} />
+                <Route path="/categories" element={<CategoryList />} />
+                <Route path="/categories/:slug" element={<CategoryDetail />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/search" element={<Search />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;

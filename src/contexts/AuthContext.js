@@ -1,19 +1,33 @@
-import React, { createContext, useState, useContext, } from "react";
+import React, { createContext, useEffect ,useState, useContext, } from "react";
+import api from "../services/api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Verify if user be authenticated in loading
-    React.useEffect(() => {
-        const token = localStorage.getItem("token");
+    useEffect(() => {
+        const token = localStorage.getItem("acessToken");
         if (token) {
-            // Add the main logical for auth
-            setUser({ email: localStorage.getItem("userEmail") });
+            // Verify if the token is valid get data from user
+            const fetchUser = async () => {
+                try {
+                    const response = await api.get("/api/profile");
+                    setUser(response.data);
+                } catch (error) {
+                    console.error("Error fetching user:", error);
+                    logout();
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchUser();
+        } else {
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     const login = async (email, password) => {

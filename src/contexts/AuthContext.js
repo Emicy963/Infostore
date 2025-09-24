@@ -1,5 +1,6 @@
 import React, { createContext, useEffect ,useState, useContext, } from "react";
 import api from "../services/api";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const AuthContext = createContext();
 
@@ -46,6 +47,18 @@ export const AuthProvider = ({ children }) => {
             const errorMessage = error.response?.data?.detail || "Login failed";
             setError(errorMessage);
             return { success: false, error: error.message };
+        }
+    };
+
+    const register = async (email, password, name) => {
+        try {
+            setError(null);
+            await api.post("/api/register/", { email, password, name });
+            return { success: true };
+        } catch (error) {
+            const errorMessage = error.response?.data?.error || "Registration failed";
+            setError(errorMessage);
+            return { success: false, error: errorMessage };
         }
     };
 

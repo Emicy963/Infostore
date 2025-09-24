@@ -32,12 +32,19 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            // Here is for request from login endpoint
-            localStorage.setItem("token", "fake-token");
-            localStorage.setItem("userEmail", email);
-            setUser({ email });
+            setError(null);
+            const response = await api.post("/api/token/", {email, password });
+            const { access, refresh, user } = response.data;
+
+            // Save token in localStorage
+            localStorage.setItem("acessToken", access);
+            localStorage.setItem("refreshToken", refresh);
+
+            setUser(user);
             return { success: true };
         } catch (error) {
+            const errorMessage = error.response?.data?.detail || "Login failed";
+            setError(errorMessage);
             return { success: false, error: error.message };
         }
     };

@@ -14,4 +14,19 @@ const Login = () => {
 
     // If user go redirect to login, save the URl
     const from = location.state?.from?.pathname || "/";
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!email || !password) {
+            setFormError("Por favor, preencha todos os campos");
+            return;
+        }
+
+        const result = await login(email, password);
+
+        if (result.success) {
+            navigate(from, { replace: true });
+        }
+    };
 };

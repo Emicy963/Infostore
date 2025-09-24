@@ -1,6 +1,5 @@
 import React, { createContext, useEffect ,useState, useContext, } from "react";
 import api from "../services/api";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const AuthContext = createContext();
 
@@ -78,7 +77,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading}}>
+        <AuthContext.Provider value={{
+            user,
+            login,
+            register,
+            logout,
+            loading,
+            error
+        }}>
             {children}
         </AuthContext.Provider>
     )

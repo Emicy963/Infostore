@@ -14,7 +14,32 @@ const Register = () => {
     const { register, error, loading } = useAuth();
     const navigate = useNavigate();
 
-    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!name || !email || !password || !confirmPassword) {
+            setFormError("Por favor, preencha todos os campos.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setFormError("As senhas não coincidém.");
+            return;
+        }
+
+        if (password.length < 6) {
+            setFormError("A senha deve ter pelo menos 6 caracteres.");
+            return;
+        }
+
+        const result = await register(email, password, name);
+
+        if (result.sucess) {
+            navigate("/login", {
+                state: { message: "Registro realizado com sucesso! Faça login para continuar." }
+            });
+        }
+    };
 };
 
 export default Register;

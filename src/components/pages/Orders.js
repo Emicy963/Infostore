@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Link from "react-router-dom"
-import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom"
 import api from "../../services/api";
 
 const Orders = () => {
-  const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

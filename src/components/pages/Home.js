@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../common/ProductCard";
 import api from "../../services/api";
 import { useCart } from "../../contexts/CartContext";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
-    const carouselRef = useRef(null);
     const { fetchCart } = useCart();
 
     // Estado para o carrossel

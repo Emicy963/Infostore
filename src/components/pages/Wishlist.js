@@ -47,28 +47,28 @@ const Wishlist = () => {
     }
   };
 
-  const handleAddToWishlist = async (productId) => {
-    try {
-      const response = await api.post('/add_to_wishlist/', {
-        email: user.email,
-        product_id: productId
-      });
+  // const handleAddToWishlist = async (productId) => {
+  //   try {
+  //     const response = await api.post('/add_to_wishlist/', {
+  //       email: user.email,
+  //       product_id: productId
+  //     });
       
-      // Se o produto já estava na lista, ele foi removido
-      if (response.status === 204) {
-        setWishlistItems(wishlistItems.filter(item => item.product.id !== productId));
-      } else {
-        // Se o produto não estava na lista, ele foi adicionado
-        const productResponse = await api.get(`/products/${productId}`);
-        setWishlistItems([...wishlistItems, { 
-          id: response.data.id, 
-          product: productResponse.data 
-        }]);
-      }
-    } catch (error) {
-      console.error("Error updating wishlist:", error);
-    }
-  };
+  //     // Se o produto já estava na lista, ele foi removido
+  //     if (response.status === 204) {
+  //       setWishlistItems(wishlistItems.filter(item => item.product.id !== productId));
+  //     } else {
+  //       // Se o produto não estava na lista, ele foi adicionado
+  //       const productResponse = await api.get(`/products/${productId}`);
+  //       setWishlistItems([...wishlistItems, { 
+  //         id: response.data.id, 
+  //         product: productResponse.data 
+  //       }]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating wishlist:", error);
+  //   }
+  // };
 
   if (loading) {
     return (

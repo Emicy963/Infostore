@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaTrash, FaPlus, FaMinus, FaShoppingCart, FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Cart = () => {
     const { cart, fetchCart, updateCartItemQuantity, removeCartItem } = useCart();
+    const { user } = useAuth();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -28,7 +30,7 @@ const Cart = () => {
 
     const calculateTotal = () => {
         if (!cart || !cart.items) return 0;
-        return cart.items.reduce((total, item) => total + (item.product.price *item.quantity), 0);
+        return cart.items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
     };
 
     if (loading) {
@@ -54,12 +56,12 @@ const Cart = () => {
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">Seu Carrinho</h1>
 
                 {cart && cart.items && cart.items.length > 0 ? (
-                    <div className="bg-white rounded-lg shadow-lg overflow-hidde">
+                    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                         <div className="md:flex">
                             <div className="md:w-2/3 p-6">
                                 <div className="space-y-6">
                                     {cart.items.map((item) => (
-                                        <div className="flex items-center border-b pb-6">
+                                        <div key={item.id} className="flex items-center border-b pb-6">
                                             <img src={item.product.image} alt={item.product.name} className="w-24 h-24 object-cover rounded-lg" />
                                             <div className="ml-4 flex-1">
                                                 <h3 className="text-lg font-semibold">{item.product.name}</h3>
@@ -88,7 +90,7 @@ const Cart = () => {
                                                 <button 
                                                     onClick={() => handleRemoveItem(item.id)}
                                                     className="text-red-500 hover:text-red-700"
-                                                    >
+                                                >
                                                     <FaTrash />
                                                 </button>
                                             </div>
@@ -113,9 +115,20 @@ const Cart = () => {
                                         <span>{calculateTotal()} Kz</span>
                                     </div>
                                 </div>
-                                <button className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300">
-                                    Finalizar Compra
-                                </button>
+                                
+                                {user ? (
+                                    <button className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300">
+                                        Finalizar Compra
+                                    </button>
+                                ) : (
+                                    <div className="mb-4">
+                                        <p className="text-gray-600 mb-2">Faça login para finalizar sua compra</p>
+                                        <Link to="/login" className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 block text-center">
+                                            Fazer Login
+                                        </Link>
+                                    </div>
+                                )}
+                                
                                 <Link to="/products" className="w-full mt-4 border border-primary text-primary py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 block text-center">
                                     Continuar Comprando
                                 </Link>

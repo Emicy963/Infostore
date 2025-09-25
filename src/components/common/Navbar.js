@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaBars, FaTimes, FaShoppingCart, FaHeart, FaSearch } from "react-icons/fa";
+import { FaBars, FaTimes, FaShoppingCart, FaHeart, FaSearch, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { useCart } from "../../contexts/CartContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dropdown, setDropdown] = useState(false);
   const { cart } = useCart();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   
   const handleClick = () => setClick(!click);
+  const toggleDropdown = () => setDropdown(!dropdown);
   
   const handleSearch = (e) => {
     e.preventDefault();
@@ -20,6 +24,25 @@ const Navbar = () => {
       setSearchQuery('');
     }
   };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  // Fechar dropdown quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdown && !event.target.closest('.user-dropdown')) {
+        setDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdown]);
 
   return (
     <nav className="bg-white/90 backdrop-blur-md shadow-lg fixed w-full z-50 transition-all duration-300">
@@ -66,9 +89,54 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
+            
             <Link to="/wishlist" className="text-gray-700 hover:text-primary transition-colors">
               <FaHeart />
             </Link>
+            
+            {/* User Menu */}
+            {user ? (
+              <div className="relative user-dropdown">
+                <button 
+                  onClick={toggleDropdown}
+                  className="flex items-center text-gray-700 hover:text-primary transition-colors"
+                >
+                  <FaUser />
+                </button>
+                {dropdown && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                    <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                      {user.name || user.email}
+                    </div>
+                    <Link 
+                      to="/profile" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setDropdown(false)}
+                    >
+                      Meu Perfil
+                    </Link>
+                    <Link 
+                      to="/orders" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setDropdown(false)}
+                    >
+                      Meus Pedidos
+                    </Link>
+                    <button 
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <FaSignOutAlt className="inline mr-2" /> Sair
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" className="text-gray-700 hover:text-primary transition-colors">
+                <FaUser />
+              </Link>
+            )}
+            
             <div className="md:hidden">
               <button onClick={handleClick} className="text-gray-700 hover:text-primary transition-colors">
                 {click ? <FaTimes /> : <FaBars />}
@@ -109,6 +177,24 @@ const Navbar = () => {
             <Link to="/categories" onClick={handleClick} className="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-300">Categorias</Link>
             <Link to="/about" onClick={handleClick} className="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-300">Sobre</Link>
             <Link to="/contact" onClick={handleClick} className="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-300">Contacto</Link>
+            
+            {user ? (
+              <>
+                <Link to="/profile" onClick={handleClick} className="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-300">Meu Perfil</Link>
+                <Link to="/orders" onClick={handleClick} className="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-300">Meus Pedidos</Link>
+                <button 
+                  onClick={() => {
+                    handleLogout();
+                    handleClick();
+                  }}
+                  className="block w-full text-left text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-300"
+                >
+                  <FaSignOutAlt className="inline mr-2" /> Sair
+                </button>
+              </>
+            ) : (
+              <Link to="/login" onClick={handleClick} className="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-300">Login</Link>
+            )}
           </div>
         </div>
       )}

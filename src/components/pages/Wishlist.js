@@ -2,60 +2,72 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
 import { useCart } from "../../contexts/CartContext";
-// import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
+import api from "../../services/api";
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { addToCart } = useCart();
-  // const { user } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Simulação de carregamento da lista de desejos
-    // Em um cenário real, você faria uma chamada à API para buscar os itens
+    // Se não há usuário autenticado, não carrega a lista de desejos
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     const fetchWishlist = async () => {
       try {
-        // Simulação de dados da lista de desejos
-        const mockWishlist = [
-          {
-            id: 1,
-            product: {
-              id: 1,
-              name: 'PC Gaming Pro',
-              price: 450000,
-              image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-              slug: 'pc-gaming-pro'
-            }
-          },
-          {
-            id: 2,
-            product: {
-              id: 2,
-              name: 'Laptop Business',
-              price: 320000,
-              image: 'https://images.unsplash.com/photo-1547082299-de196ea013d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-              slug: 'laptop-business'
-            }
-          }
-        ];
-        
-        setWishlistItems(mockWishlist);
+        const response = await api.get('/api/wishlist/');
+        setWishlistItems(response.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching wishlist:", error);
+        setError("Erro ao carregar sua lista de desejos. Tente novamente.");
         setLoading(false);
+        console.error("Error fetching wishlist:", error);
       }
     };
 
     fetchWishlist();
-  }, []);
+  }, [user]);
 
   const handleAddToCart = (productId) => {
     addToCart(productId);
   };
 
-  const handleRemoveFromWishlist = (itemId) => {
-    setWishlistItems(wishlistItems.filter(item => item.id !== itemId));
+  const handleRemoveFromWishlist = async (itemId) => {
+    try {
+      await api.delete(`/api/wishlist/${itemId}/`);
+      setWishlistItems(wishlistItems.filter(item => item.id !== itemId));
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+    }
+  };
+
+  const handleAddToWishlist = async (productId) => {
+    try {
+      const response = await api.post('/add_to_wishlist/', {
+        email: user.email,
+        product_id: productId
+      });
+      
+      // Se o produto já estava na lista, ele foi removido
+      if (response.status === 204) {
+        setWishlistItems(wishlistItems.filter(item => item.product.id !== productId));
+      } else {
+        // Se o produto não estava na lista, ele foi adicionado
+        const productResponse = await api.get(`/products/${productId}`);
+        setWishlistItems([...wishlistItems, { 
+          id: response.data.id, 
+          product: productResponse.data 
+        }]);
+      }
+    } catch (error) {
+      console.error("Error updating wishlist:", error);
+    }
   };
 
   if (loading) {
@@ -64,6 +76,24 @@ const Wishlist = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-gray-600">Carregando lista de desejos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Se não há usuário autenticado, mostra mensagem para fazer login
+  if (!user) {
+    return (
+      <div className="pt-16 pb-12 bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg p-12 text-center max-w-md">
+          <div className="flex justify-center mb-6">
+            <FaHeart className="text-6xl text-gray-300" />
+          </div>
+          <h2 className="text-2xl font-semibold mb-4">Acesso Restrito</h2>
+          <p className="text-gray-600 mb-6">Você precisa estar logado para ver sua lista de desejos.</p>
+          <Link to="/login" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block">
+            Fazer Login
+          </Link>
         </div>
       </div>
     );
@@ -79,6 +109,12 @@ const Wishlist = () => {
         </div>
         
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Sua Lista de Desejos</h1>
+        
+        {error && (
+          <div className="bg-red-50 text-red-700 p-4 rounded-lg mb-6">
+            {error}
+          </div>
+        )}
         
         {wishlistItems.length > 0 ? (
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">

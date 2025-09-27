@@ -23,7 +23,7 @@ const Register = () => {
         }
 
         if (password !== confirmPassword) {
-            setFormError("As senhas não coincidém.");
+            setFormError("As senhas não coincidem.");
             return;
         }
 
@@ -34,7 +34,8 @@ const Register = () => {
 
         const result = await register(email, password, name);
 
-        if (result.sucess) {
+        // Corrigido: "success" em vez de "sucess"
+        if (result.success) {
             navigate("/login", {
                 state: { message: "Registro realizado com sucesso! Faça login para continuar." }
             });
@@ -135,7 +136,7 @@ const Register = () => {
                     <p className="text-gray-600">
                         Já tem uma conta?{' '}
                         <Link to="/login" className="text-primary hover:text-primary-dark">
-                        Faça login
+                            Faça login
                         </Link>
                     </p>
                 </div>

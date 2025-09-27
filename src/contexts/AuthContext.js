@@ -33,7 +33,10 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
         setError(null);
-        const response = await api.post("/api/token/", { email, password });
+        const response = await api.post("/api/token/", { 
+            email: email, 
+            password: password 
+        });
         const { access, refresh, user } = response.data;
         
         // Salvar tokens no localStorage

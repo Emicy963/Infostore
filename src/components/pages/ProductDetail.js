@@ -9,12 +9,12 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
-    const { addToCart } = useCart;
+    const { addToCart } = useCart();
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await api.get(`/products/${slug}`);
+                const response = await api.get(`/products/${slug}/`);
                 setProduct(response.data);
                 setLoading(false);
             } catch (error) {

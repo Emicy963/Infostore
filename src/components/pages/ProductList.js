@@ -9,7 +9,7 @@ const ProductList = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await api.get("/product_list");
+                const response = await api.get("/product_list/");
                 setProducts(response.data);
                 setLoading(false);
             } catch (error) {

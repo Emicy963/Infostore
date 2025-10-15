@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
-import api from "../services/api";
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -9,15 +9,15 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem('accessToken');
         if (token) {
         // Verificar se o token é válido obtendo os dados do usuário
         const fetchUser = async () => {
             try {
-            const response = await api.get("/api/profile/");
+            const response = await api.get('/auth/profile/');
             setUser(response.data);
             } catch (err) {
-            console.error("Error fetching user:", err);
+            console.error('Error fetching user:', err);
             logout();
             } finally {
             setLoading(false);
@@ -30,29 +30,29 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    const login = async (email, password) => {
+    const login = async (username, password) => {
         try {
         setError(null);
-        const response = await api.post("/api/token/", { 
-            email: email, 
-            password: password 
+        const response = await api.post('/auth/token/', { 
+            username, 
+            password 
         });
         const { access, refresh, user } = response.data;
         
         // Salvar tokens no localStorage
-        localStorage.setItem("accessToken", access);
-        localStorage.setItem("refreshToken", refresh);
+        localStorage.setItem('accessToken', access);
+        localStorage.setItem('refreshToken', refresh);
         
         setUser(user);
         return { success: true };
         } catch (err) {
-        let errorMessage = "Login failed";
+        let errorMessage = 'Login failed';
         
         // Tratamento detalhado de erros
         if (err.response) {
             // O servidor respondeu com um status de erro
             if (err.response.status === 401) {
-            errorMessage = "Email ou senha incorretos";
+            errorMessage = 'Email ou senha incorretos';
             } else if (err.response.data && err.response.data.detail) {
             errorMessage = err.response.data.detail;
             } else if (err.response.data && err.response.data.error) {
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
             }
         } else if (err.request) {
             // A requisição foi feita mas não houve resposta
-            errorMessage = "Sem resposta do servidor. Verifique sua conexão.";
+            errorMessage = 'Sem resposta do servidor. Verifique sua conexão.';
         } else {
             // Algum outro erro ocorreu
             errorMessage = err.message;
@@ -71,15 +71,15 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const register = async (email, password, name) => {
+    const register = async (userData) => {
         try {
         setError(null);
-        const response = await api.post("/api/register/", { email, password, name });
+        const response = await api.post('/auth/register/', userData);
         
         // Se o registro for bem-sucedido, retornamos sucesso
         return { success: true, data: response.data };
         } catch (err) {
-        let errorMessage = "Registration failed";
+        let errorMessage = 'Registration failed';
         
         // Tratamento detalhado de erros
         if (err.response) {
@@ -87,11 +87,11 @@ export const AuthProvider = ({ children }) => {
             if (err.response.data && err.response.data.error) {
             errorMessage = err.response.data.error;
             } else if (err.response.status === 400) {
-            errorMessage = "Dados inválidos. Verifique as informações e tente novamente.";
+            errorMessage = 'Dados inválidos. Verifique as informações e tente novamente.';
             }
         } else if (err.request) {
             // A requisição foi feita mas não houve resposta
-            errorMessage = "Sem resposta do servidor. Verifique sua conexão.";
+            errorMessage = 'Sem resposta do servidor. Verifique sua conexão.';
         } else {
             // Algum outro erro ocorreu
             errorMessage = err.message;
@@ -104,15 +104,15 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-        const refreshToken = localStorage.getItem("refreshToken");
+        const refreshToken = localStorage.getItem('refreshToken');
         if (refreshToken) {
-            await api.post("/api/logout/", { refresh: refreshToken });
+            await api.post('/auth/logout/', { refresh: refreshToken });
         }
         } catch (err) {
-        console.error("Error during logout:", err);
+        console.error('Error during logout:', err);
         } finally {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         setUser(null);
         }
     };

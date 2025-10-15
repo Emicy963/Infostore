@@ -1,4 +1,3 @@
-// src/contexts/CartContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import api from '../services/api';
 import { useAuth } from './AuthContext';
@@ -18,14 +17,20 @@ export const CartProvider = ({ children }) => {
 
     const fetchCart = async () => {
         try {
-        // Adicionar a barra no final da URL
-        const response = await api.get(`/api/cart/${cartCode}/`);
+        let response;
+        if (user) {
+            // Usuário autenticado - não precisa de código
+            response = await api.get('/cart/');
+        } else {
+            // Usuário anônimo - precisa do código
+            response = await api.get('/cart/', { params: { code: cartCode } });
+        }
         setCart(response.data);
         } catch (error) {
         console.error('Error fetching cart:', error);
         // Se o carrinho não existir, criar um novo
         try {
-            const newCartResponse = await api.post('/cart/create/');
+            const newCartResponse = await api.post('/cart/', {});
             const newCart = newCartResponse.data;
             setCartCode(newCart.cart_code);
             localStorage.setItem('cart_code', newCart.cart_code);
@@ -38,55 +43,14 @@ export const CartProvider = ({ children }) => {
 
     const mergeCarts = async () => {
         try {
-        // Se o usuário está autenticado, tentamos buscar o carrinho do usuário
-        const response = await api.get('/api/cart/user/');
-        const userCart = response.data;
+        // Mesclar carrinho temporário com o carrinho do usuário
+        const response = await api.post('/cart/merge/', {
+            temp_cart_code: cartCode
+        });
         
-        // Se o carrinho do usuário existe, mesclar com o carrinho local
-        if (userCart && userCart.items && userCart.items.length > 0) {
-            // Adicionar itens do carrinho local ao carrinho do usuário
-            if (cart && cart.items && cart.items.length > 0) {
-            for (const item of cart.items) {
-                await api.post('/add_to_cart/', {
-                cart_code: userCart.cart_code,
-                product_id: item.product.id,
-                quantity: item.quantity
-                });
-            }
-            }
-            
-            // Atualizar o cartCode para o do usuário
-            setCartCode(userCart.cart_code);
-            localStorage.setItem('cart_code', userCart.cart_code);
-            
-            // Buscar o carrinho atualizado
-            const updatedCart = await api.get(`/api/cart/${userCart.cart_code}/`);
-            setCart(updatedCart.data);
-        } else {
-            // Se o usuário não tem carrinho, criar um para ele
-            const newCartResponse = await api.post('/api/cart/create/', { user: user.id });
-            const newCart = newCartResponse.data;
-            
-            // Mover itens do carrinho local para o novo carrinho do usuário
-            if (cart && cart.items && cart.items.length > 0) {
-            for (const item of cart.items) {
-                await api.post('/add_to_cart/', {
-                cart_code: newCart.cart_code,
-                product_id: item.product.id,
-                quantity: item.quantity
-                });
-            }
-            
-            // Buscar o carrinho atualizado
-            const updatedCart = await api.get(`/api/cart/${newCart.cart_code}/`);
-            setCart(updatedCart.data);
-            } else {
-            setCart(newCart);
-            }
-            
-            setCartCode(newCart.cart_code);
-            localStorage.setItem('cart_code', newCart.cart_code);
-        }
+        setCart(response.data);
+        setCartCode(response.data.cart_code);
+        localStorage.setItem('cart_code', response.data.cart_code);
         } catch (error) {
         console.error('Error merging carts:', error);
         // Se houver erro, continuar com o carrinho local
@@ -102,13 +66,14 @@ export const CartProvider = ({ children }) => {
         // Se o usuário não está autenticado, usar o carrinho local
         fetchCart();
         }
-    }, [user]); // Removemos as dependências que causam o erro
+    }, [user]);
 
-    const addToCart = async (productId) => {
+    const addToCart = async (productId, quantity = 1) => {
         try {
-        await api.post('/add_to_cart/', {
+        await api.post('/cart/add/', {
             cart_code: cartCode,
-            product_id: productId
+            product_id: productId,
+            quantity
         });
         fetchCart();
         } catch (error) {
@@ -118,7 +83,7 @@ export const CartProvider = ({ children }) => {
 
     const updateCartItemQuantity = async (itemId, quantity) => {
         try {
-        await api.put('/update_cartitem_quantity/', {
+        await api.put('/cart/update/', {
             item_id: itemId,
             quantity
         });
@@ -130,7 +95,7 @@ export const CartProvider = ({ children }) => {
 
     const removeCartItem = async (itemId) => {
         try {
-        await api.delete(`/delete_cartitem/${itemId}`);
+        await api.delete(`/cart/item/${itemId}/delete/`);
         fetchCart();
         } catch (error) {
         console.error('Error removing cart item:', error);

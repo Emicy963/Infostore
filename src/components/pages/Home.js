@@ -1,156 +1,150 @@
 import React, { useEffect, useState } from "react";
-import ProductCard from "../common/ProductCard";
+import { ChevronLeft, ChevronRight, Star, Heart, TrendingUp, Zap, Package } from "lucide-react";
 import api from "../../services/api";
 import { useCart } from "../../contexts/CartContext";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
-    const { fetchCart } = useCart();
-
-    // Estado para o carrossel
+    const [categories, setCategories] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0);
-    const slides = [
-        { image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", title: "PC Gaming Moderno" },
-        { image: "https://images.unsplash.com/photo-1547082299-de196ea013d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", title: "Laptop Profissional" },
-        { image: "https://images.unsplash.com/photo-1587614387466-0a72ca909e16?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", title: "Desktop All-in-One" },
-        { image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", title: "Setup Completo" },
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const { fetchCart } = useCart();
+    
+    // Banners promocionais para o carousel
+    const promoBanners = [
+        { 
+            image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=1200&h=400&fit=crop",
+            title: "PCs Gaming com até 30% OFF",
+            subtitle: "Os melhores preços em computadores para jogos",
+            cta: "Ver Ofertas"
+        },
+        { 
+            image: "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=1200&h=400&fit=crop",
+            title: "Laptops Profissionais",
+            subtitle: "Ideal para trabalho e produtividade",
+            cta: "Comprar Agora"
+        },
+        { 
+            image: "https://images.unsplash.com/photo-1587614387466-0a72ca909e16?w=1200&h=400&fit=crop",
+            title: "Desktops All-in-One",
+            subtitle: "Design elegante e economia de espaço",
+            cta: "Explorar"
+        },
+        { 
+            image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&h=400&fit=crop",
+            title: "Monte seu Setup Completo",
+            subtitle: "Tudo que você precisa em um só lugar",
+            cta: "Começar"
+        }
     ];
 
-    // Funções do carrossel
-    const nextSlide = () => {
-        setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    };
+    // Produtos de exemplo (serão substituídos pela API)
+    const sampleProducts = [
+        {
+            id: 1,
+            name: "PC Gaming Pro - Intel i5, GTX 1660 Super",
+            category: "Desktop",
+            price: "450.000",
+            image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=300&h=300&fit=crop",
+            rating: 4.8,
+            reviews: 124,
+            discount: 15,
+            inStock: true
+        },
+        {
+            id: 2,
+            name: "Laptop Business Dell Latitude 7420",
+            category: "Laptop",
+            price: "320.000",
+            image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=300&h=300&fit=crop",
+            rating: 4.6,
+            reviews: 89,
+            inStock: true
+        },
+        {
+            id: 3,
+            name: "iMac All-in-One 24\" M1 Chip",
+            category: "Desktop",
+            price: "180.000",
+            image: "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=300&h=300&fit=crop",
+            rating: 4.9,
+            reviews: 203,
+            badge: "Mais Vendido",
+            inStock: true
+        },
+        {
+            id: 4,
+            name: "Laptop Gaming MSI Katana GF66",
+            category: "Laptop",
+            price: "520.000",
+            image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=300&h=300&fit=crop",
+            rating: 4.7,
+            reviews: 156,
+            discount: 20,
+            inStock: true
+        },
+        {
+            id: 5,
+            name: "PC Workstation Pro - Intel Xeon",
+            category: "Desktop",
+            price: "680.000",
+            image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=300&h=300&fit=crop",
+            rating: 4.5,
+            reviews: 67,
+            inStock: false
+        },
+        {
+            id: 6,
+            name: "MacBook Pro 14\" M3 Pro",
+            category: "Laptop",
+            price: "890.000",
+            image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop",
+            rating: 5.0,
+            reviews: 342,
+            badge: "Premium",
+            inStock: true
+        },
+        {
+            id: 7,
+            name: "Desktop Gaming RGB - Ryzen 7",
+            category: "Desktop",
+            price: "410.000",
+            image: "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=300&h=300&fit=crop",
+            rating: 4.6,
+            reviews: 98,
+            discount: 10,
+            inStock: true
+        },
+        {
+            id: 8,
+            name: "Laptop Ultrabook HP Spectre x360",
+            category: "Laptop",
+            price: "620.000",
+            image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=300&fit=crop",
+            rating: 4.8,
+            reviews: 176,
+            inStock: true
+        }
+    ];
 
-    const prevSlide = () => {
-        setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    };
+    const sampleCategories = [
+        { id: 1, name: "Desktop", slug: "desktop", count: 45, icon: "💻" },
+        { id: 2, name: "Laptop", slug: "laptop", count: 67, icon: "🖥️" },
+        { id: 3, name: "Gaming", slug: "gaming", count: 32, icon: "🎮" },
+        { id: 4, name: "Acessórios", slug: "acessorios", count: 128, icon: "⌨️" },
+        { id: 5, name: "Monitores", slug: "monitores", count: 54, icon: "🖱️" },
+        { id: 6, name: "Componentes", slug: "componentes", count: 89, icon: "🔧" }
+    ];
 
-    const goToSlide = (index) => {
-        setCurrentSlide(index);
-    };
-
-    // Auto-slide do carrossel
+    // Carousel automático
     useEffect(() => {
-        const interval = setInterval(nextSlide, 3000);
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev === promoBanners.length - 1 ? 0 : prev + 1));
+        }, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [promoBanners.length]);
 
-    // Animações de rolagem
-    useEffect(() => {
-        const handleScrollAnimations = () => {
-            const elements = document.querySelectorAll('.animate-on-scroll');
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('animate');
-                }
-            });
-        };
-
-        const toggleBackToTop = () => {
-            const backToTopButton = document.getElementById('backToTop');
-            if (backToTopButton) {
-                if (window.scrollY > 300) {
-                    backToTopButton.style.opacity = '1';
-                    backToTopButton.style.pointerEvents = 'auto';
-                } else {
-                    backToTopButton.style.opacity = '0';
-                    backToTopButton.style.pointerEvents = 'none';
-                }
-            }
-        };
-
-        // Rolagem suave para links âncora
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    // Fechar menu mobile se estiver aberto
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    if (mobileMenu) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                }
-            });
-        });
-
-        // Botão "Voltar ao topo"
-        const backToTopButton = document.getElementById('backToTop');
-        if (backToTopButton) {
-            backToTopButton.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-
-        // Menu mobile
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenuBtn && mobileMenu) {
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        }
-
-        // Contador animado
-        const animateCounter = (element, target, duration = 2000) => {
-            let start = 0;
-            const increment = target / (duration / 16);
-            
-            function updateCounter() {
-                start += increment;
-                if (start < target) {
-                    element.textContent = Math.floor(start);
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    element.textContent = target;
-                }
-            }
-            
-            updateCounter();
-        };
-
-        // Ativar contador quando visível
-        const clientCounter = document.querySelector('.client-counter');
-        if (clientCounter) {
-            const counterObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        animateCounter(clientCounter, 500);
-                        counterObserver.unobserve(entry.target);
-                    }
-                });
-            });
-            
-            counterObserver.observe(clientCounter);
-        }
-
-        // Inicializar eventos de rolagem
-        window.addEventListener('scroll', () => {
-            handleScrollAnimations();
-            toggleBackToTop();
-        });
-
-        // Inicializar ao carregar a página
-        handleScrollAnimations();
-        toggleBackToTop();
-
-        // Limpar eventos ao desmontar
-        return () => {
-            window.removeEventListener('scroll', handleScrollAnimations);
-        };
-    }, []);
-
-    // Carregar produtos
+    // Carregar produtos e categorias da API
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -158,356 +152,336 @@ const Home = () => {
                 setProducts(response.data);
             } catch (error) {
                 console.error("Error fetching products:", error);
+                // Fallback para produtos de exemplo
+                setProducts(sampleProducts);
+            }
+        };
+
+        const fetchCategories = async () => {
+            try {
+                const response = await api.get("/category_list");
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                // Fallback para categorias de exemplo
+                setCategories(sampleCategories);
             }
         };
 
         fetchProducts();
+        fetchCategories();
         fetchCart();
     }, [fetchCart]);
 
+    const filteredProducts = selectedCategory 
+        ? products.filter(p => p.category === selectedCategory)
+        : products;
+
+    const nextSlide = () => setCurrentSlide((prev) => (prev === promoBanners.length - 1 ? 0 : prev + 1));
+    const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? promoBanners.length - 1 : prev - 1));
+
     return (
-        <div className="bg-gray-50 overflow-x-hidden">
-            {/* Particles Background */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="particle w-2 h-2 top-1/4 left-1/4" style={{animationDelay: '0s', animationDuration: '6s'}}></div>
-                <div className="particle w-3 h-3 top-1/3 right-1/4" style={{animationDelay: '1s', animationDuration: '8s'}}></div>
-                <div className="particle w-1 h-1 top-1/2 left-1/2" style={{animationDelay: '2s', animationDuration: '4s'}}></div>
-                <div className="particle w-2 h-2 top-3/4 right-1/3" style={{animationDelay: '3s', animationDuration: '7s'}}></div>
-                <div className="particle w-1 h-1 top-1/5 right-1/5" style={{animationDelay: '4s', animationDuration: '5s'}}></div>
+        <div className="min-h-screen pt-16 relative bg-fixed bg-cover bg-center" style={{backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/infostore2.jpg')"}}>
+            {/* Categories Bar */}
+            <div className="bg-white border-b shadow-sm sticky top-16 z-40">
+                <div className="max-w-7xl mx-auto px-4 py-3">
+                    <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+                        <button
+                            onClick={() => setSelectedCategory(null)}
+                            className={`px-4 py-2 rounded-lg whitespace-nowrap transition-all duration-300 font-medium ${
+                                !selectedCategory 
+                                    ? 'bg-primary text-white shadow-md' 
+                                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                            }`}
+                        >
+                            Todos os Produtos
+                        </button>
+                        {categories.map((cat) => (
+                            <button
+                                key={cat.id}
+                                onClick={() => setSelectedCategory(cat.name)}
+                                className={`px-4 py-2 rounded-lg whitespace-nowrap transition-all duration-300 font-medium ${
+                                    selectedCategory === cat.name
+                                        ? 'bg-primary text-white shadow-md'
+                                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                                }`}
+                            >
+                                <span className="mr-2">{cat.icon}</span>
+                                {cat.name}
+                                <span className="ml-2 text-xs opacity-75">({cat.count})</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
 
-            {/* Hero Section */}
-            <section id="inicio" className="pt-16 gradient-bg text-white relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="animate-on-scroll">
-                            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                                Vendas e Soluções <span className="text-yellow-300">Tecnológicas</span>
-                            </h1>
-                            <p className="text-xl mb-8 text-blue-100 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-                                Na Infostore, oferecemos os melhores computadores e soluções tecnológicas em Angola. Qualidade, garantia e suporte técnico especializado.
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-                                <a href="#produtos" className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 text-center hover:scale-105 hover:shadow-lg">
-                                    Ver Produtos
-                                </a>
-                                <a href="tel:+244926625296" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all duration-300 text-center hover:scale-105 hover:shadow-lg">
-                                    <i className="fas fa-phone mr-2"></i>Ligar Agora
-                                </a>
-                            </div>
-                        </div>
-
-                        {/* Carousel Container */}
-                        <div className="relative animate-on-scroll">
-                            <div className="carousel-container overflow-hidden rounded-lg shadow-2xl hover-lift glow">
-                                <div className="carousel-track flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-                                    {slides.map((slide, index) => (
-                                        <div key={index} className="carousel-slide w-full flex-shrink-0">
-                                            <img src={slide.image} alt={slide.title} className="w-full h-80 object-cover" />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            
-                            {/* Navigation Arrows */}
-                            <button onClick={prevSlide} className="carousel-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all hover:scale-110">
-                                <i className="fas fa-chevron-left"></i>
-                            </button>
-                            <button onClick={nextSlide} className="carousel-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all hover:scale-110">
-                                <i className="fas fa-chevron-right"></i>
-                            </button>
-                            
-                            {/* Dots Indicators */}
-                            <div className="carousel-dots flex justify-center mt-4 space-x-2">
-                                {slides.map((_, index) => (
-                                    <button 
-                                        key={index} 
-                                        onClick={() => goToSlide(index)}
-                                        className={`dot w-3 h-3 rounded-full ${currentSlide === index ? 'bg-opacity-100' : 'bg-opacity-50'} bg-white hover:bg-opacity-100 transition-all hover:scale-125`}
+            {/* Hero Banner Carousel */}
+            <section className="bg-gradient-to-r from-blue-50 to-blue-100 py-8">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                        <div 
+                            className="flex transition-transform duration-700 ease-in-out"
+                            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                        >
+                            {promoBanners.map((banner, index) => (
+                                <div key={index} className="min-w-full relative">
+                                    <img 
+                                        src={banner.image} 
+                                        alt={banner.title}
+                                        className="w-full h-64 md:h-96 object-cover"
                                     />
-                                ))}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent flex items-center">
+                                        <div className="text-white px-8 md:px-16 max-w-2xl">
+                                            <h2 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">
+                                                {banner.title}
+                                            </h2>
+                                            <p className="text-lg md:text-xl mb-6 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+                                                {banner.subtitle}
+                                            </p>
+                                            <button className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition-all duration-300 hover:scale-105 shadow-lg animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+                                                {banner.cta}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <button 
+                            onClick={prevSlide}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full transition-all shadow-lg hover:scale-110"
+                        >
+                            <ChevronLeft className="text-gray-900" />
+                        </button>
+                        <button 
+                            onClick={nextSlide}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full transition-all shadow-lg hover:scale-110"
+                        >
+                            <ChevronRight className="text-gray-900" />
+                        </button>
+
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                            {promoBanners.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentSlide(index)}
+                                    className={`w-3 h-3 rounded-full transition-all ${
+                                        currentSlide === index ? 'bg-white w-8' : 'bg-white/50'
+                                    }`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Quick Features */}
+            <section className="py-8 bg-white border-b">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg">
+                            <div className="bg-primary text-white p-3 rounded-full">
+                                <Package size={24} />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-gray-900">Entrega Rápida</h3>
+                                <p className="text-sm text-gray-600">Em toda Luanda</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg">
+                            <div className="bg-green-600 text-white p-3 rounded-full">
+                                <Zap size={24} />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-gray-900">Pagamento Seguro</h3>
+                                <p className="text-sm text-gray-600">100% Protegido</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 bg-yellow-50 rounded-lg">
+                            <div className="bg-yellow-600 text-white p-3 rounded-full">
+                                <TrendingUp size={24} />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-gray-900">Garantia Total</h3>
+                                <p className="text-sm text-gray-600">Produtos originais</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg">
+                            <div className="bg-purple-600 text-white p-3 rounded-full">
+                                <Star size={24} />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-gray-900">500+ Clientes</h3>
+                                <p className="text-sm text-gray-600">Satisfeitos</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Features */}
-            <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="text-center p-6 hover-lift animate-on-scroll">
-                            <div className="bg-primary-light text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-in glow">
-                                <i className="fas fa-shield-alt text-2xl"></i>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Garantia Completa</h3>
-                            <p className="text-gray-600">Todos os nossos produtos vêm com garantia completa e suporte técnico especializado.</p>
+            {/* Products Grid */}
+            <section className="py-12">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+                        <div>
+                            <h2 className="text-3xl font-bold text-gray-900">
+                                {selectedCategory ? (
+                                    <>Produtos: <span className="text-primary">{selectedCategory}</span></>
+                                ) : (
+                                    <>Todos os <span className="text-primary">Produtos</span></>
+                                )}
+                            </h2>
+                            <p className="text-gray-600 mt-2">{filteredProducts.length} produtos encontrados</p>
                         </div>
-                        <div className="text-center p-6 hover-lift animate-on-scroll" style={{animationDelay: '0.2s'}}>
-                            <div className="bg-primary-light text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-in glow">
-                                <i className="fas fa-truck text-2xl"></i>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Entrega Rápida</h3>
-                            <p className="text-gray-600">Entregamos em toda Luanda com rapidez e segurança diretamente na sua casa ou escritório.</p>
-                        </div>
-                        <div className="text-center p-6 hover-lift animate-on-scroll" style={{animationDelay: '0.4s'}}>
-                            <div className="bg-primary-light text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-in glow">
-                                <i className="fas fa-tools text-2xl"></i>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Instalação & Suporte</h3>
-                            <p className="text-gray-600">Oferecemos instalação completa e suporte técnico contínuo para todos os clientes.</p>
-                        </div>
+                        <select className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white">
+                            <option>Mais Relevantes</option>
+                            <option>Menor Preço</option>
+                            <option>Maior Preço</option>
+                            <option>Mais Vendidos</option>
+                            <option>Melhor Avaliados</option>
+                        </select>
                     </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                        {filteredProducts.map((product) => (
+                            <div 
+                                key={product.id}
+                                className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer border border-gray-100"
+                            >
+                                <div className="relative overflow-hidden bg-gray-50">
+                                    <img 
+                                        src={product.image} 
+                                        alt={product.name}
+                                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                    {product.badge && (
+                                        <span className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                            {product.badge}
+                                        </span>
+                                    )}
+                                    {product.discount && (
+                                        <span className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                            -{product.discount}%
+                                        </span>
+                                    )}
+                                    {!product.inStock && (
+                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                            <span className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold">
+                                                Esgotado
+                                            </span>
+                                        </div>
+                                    )}
+                                    <button className="absolute top-3 right-3 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-lg hover:scale-110">
+                                        <Heart size={18} className="text-red-500" />
+                                    </button>
+                                </div>
+                                
+                                <div className="p-4">
+                                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12 group-hover:text-primary transition-colors">
+                                        {product.name}
+                                    </h3>
+                                    
+                                    <div className="flex items-center gap-1 mb-3">
+                                        <div className="flex">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star 
+                                                    key={i} 
+                                                    size={14} 
+                                                    className={i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
+                                                />
+                                            ))}
+                                        </div>
+                                        <span className="text-xs text-gray-500">({product.reviews})</span>
+                                    </div>
+
+                                    <div className="flex items-end justify-between mb-3">
+                                        <div>
+                                            {product.discount && (
+                                                <div className="text-sm text-gray-400 line-through">
+                                                    {Math.round(parseFloat(product.price.replace(/\./g, '')) / (1 - product.discount / 100)).toLocaleString()} Kz
+                                                </div>
+                                            )}
+                                            <div className="text-2xl font-bold text-primary">
+                                                {product.price} Kz
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button 
+                                        disabled={!product.inStock}
+                                        className={`w-full py-2.5 rounded-lg font-semibold transition-all duration-300 ${
+                                            product.inStock 
+                                                ? 'bg-primary text-white hover:bg-primary-dark hover:shadow-lg' 
+                                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        }`}
+                                    >
+                                        {product.inStock ? 'Adicionar ao Carrinho' : 'Indisponível'}
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {filteredProducts.length === 0 && (
+                        <div className="text-center py-16">
+                            <div className="text-6xl mb-4">📦</div>
+                            <p className="text-gray-500 text-xl font-medium">Nenhum produto encontrado nesta categoria.</p>
+                            <button 
+                                onClick={() => setSelectedCategory(null)}
+                                className="mt-4 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition"
+                            >
+                                Ver Todos os Produtos
+                            </button>
+                        </div>
+                    )}
                 </div>
             </section>
 
-            {/* Products Section */}
-            <section id="produtos" className="py-16 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12 animate-on-scroll">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nossos Produtos em <span className="text-primary">Destaque</span></h2>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Descubra nossa seleção de computadores de alta qualidade, perfeitos para trabalho, estudos e entretenimento.
-                        </p>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {products.length > 0 ? (
-                            products.map((product, index) => (
-                                <ProductCard key={product.id} product={product} style={{animationDelay: `${index * 0.2}s`}} />
-                            ))
-                        ) : (
-                            // Produtos estáticos caso a API não retorne dados
-                            <>
-                                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover-lift animate-on-scroll product-card">
-                                    <div className="relative overflow-hidden">
-                                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Computador Gaming" className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110" />
-                                        <div className="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-sm animate-pulse">
-                                            Novo
-                                        </div>
-                                    </div>
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-semibold mb-2">PC Gaming Pro</h3>
-                                        <p className="text-gray-600 mb-4">Intel i5, 16GB RAM, GTX 1660 Super, 512GB SSD - Perfeito para jogos e trabalho pesado.</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-2xl font-bold text-primary animate-pulse-slow">450.000 Kz</span>
-                                            <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                                                Consultar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover-lift animate-on-scroll product-card" style={{animationDelay: '0.2s'}}>
-                                    <div className="relative overflow-hidden">
-                                        <img src="https://images.unsplash.com/photo-1547082299-de196ea013d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Laptop Business" className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110" />
-                                        <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-sm animate-pulse">
-                                            Popular
-                                        </div>
-                                    </div>
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-semibold mb-2">Laptop Business</h3>
-                                        <p className="text-gray-600 mb-4">Intel i7, 8GB RAM, 256GB SSD - Ideal para profissionais e estudantes universitários.</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-2xl font-bold text-primary animate-pulse-slow">320.000 Kz</span>
-                                            <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                                                Consultar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover-lift animate-on-scroll product-card" style={{animationDelay: '0.4s'}}>
-                                    <div className="relative overflow-hidden">
-                                        <img src="https://images.unsplash.com/photo-1587614387466-0a72ca909e16?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="All-in-One Desktop" className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110" />
-                                        <div className="absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded-full text-sm animate-pulse">
-                                            Oferta
-                                        </div>
-                                    </div>
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-semibold mb-2">Desktop All-in-One</h3>
-                                        <p className="text-gray-600 mb-4">Intel i3, 8GB RAM, 1TB HDD - Solução completa para casa e escritório com design elegante.</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-2xl font-bold text-primary animate-pulse-slow">180.000 Kz</span>
-                                            <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                                                Consultar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-
-                    <div className="text-center mt-12 animate-on-scroll">
-                        <a href="tel:+244926625296" className="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block hover:scale-105 hover:shadow-lg">
-                            <i className="fab fa-whatsapp mr-2"></i>Ver Mais Produtos no WhatsApp
+            {/* CTA Section */}
+            {/* <section className="py-16 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white">
+                <div className="max-w-7xl mx-auto px-4 text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Precisa de Ajuda para Escolher?
+                    </h2>
+                    <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                        Nossa equipe está pronta para ajudá-lo a encontrar o computador perfeito para suas necessidades.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a 
+                            href="https://wa.me/244926625296" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-600 transition-all duration-300 hover:scale-105 shadow-lg inline-flex items-center justify-center gap-2"
+                        >
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                            </svg>
+                            Falar no WhatsApp
+                        </a>
+                        <a 
+                            href="tel:+244926625296"
+                            className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg inline-flex items-center justify-center gap-2"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            Ligar Agora
                         </a>
                     </div>
                 </div>
-            </section>
-
-            {/* Services Section */}
-            <section id="servicos" className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12 animate-on-scroll">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nossos <span className="text-primary">Serviços</span></h2>
-                        <p className="text-xl text-gray-600">Soluções completas para todas as suas necessidades tecnológicas</p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="text-center p-6 hover-lift animate-on-scroll service-card">
-                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
-                                <i className="fas fa-laptop text-3xl"></i>
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">Venda de Computadores</h3>
-                            <p className="text-gray-600 text-sm">Ampla variedade de desktops e laptops para todas as necessidades.</p>
-                        </div>
-
-                        <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.2s'}}>
-                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
-                                <i className="fas fa-wrench text-3xl"></i>
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">Suporte Técnico</h3>
-                            <p className="text-gray-600 text-sm">Manutenção e reparo de computadores com técnicos especializados.</p>
-                        </div>
-
-                        <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.4s'}}>
-                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
-                                <i className="fas fa-cog text-3xl"></i>
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">Instalação</h3>
-                            <p className="text-gray-600 text-sm">Instalação de sistemas operativos e software especializado.</p>
-                        </div>
-
-                        <div className="text-center p-6 hover-lift animate-on-scroll service-card" style={{animationDelay: '0.6s'}}>
-                            <div className="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-primary hover:text-white transition-all duration-300 animate-float">
-                                <i className="fas fa-shipping-fast text-3xl"></i>
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">Entrega</h3>
-                            <p className="text-gray-600 text-sm">Entrega rápida e segura em toda a região de Luanda.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* About Section */}
-            <section id="sobre" className="py-16 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="animate-on-scroll">
-                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Sobre a <span className="text-primary">Infostore</span></h2>
-                            <p className="text-lg text-gray-600 mb-6">
-                                A Infostore é uma empresa angolana especializada em vendas e soluções tecnológicas. Atendemos desde gamers profissionais até estudantes e engenheiros, oferecendo produtos de qualidade com garantia completa.
-                            </p>
-                            <p className="text-lg text-gray-600 mb-6">
-                                Nossa missão é democratizar o acesso à tecnologia em Angola, fornecendo computadores e soluções tecnológicas com os melhores preços do mercado, sem comprometer a qualidade.
-                            </p>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="text-center p-4 bg-white rounded-lg hover-lift animate-scale-in">
-                                    <div className="text-2xl font-bold text-primary animate-pulse-slow">
-                                        <span className="client-counter">500</span>+
-                                    </div>
-                                    <div className="text-sm text-gray-600">Clientes Satisfeitos</div>
-                                </div>
-                                <div className="text-center p-4 bg-white rounded-lg hover-lift animate-scale-in" style={{animationDelay: '0.2s'}}>
-                                    <div className="text-2xl font-bold text-primary animate-pulse-slow">2+</div>
-                                    <div className="text-sm text-gray-600">Anos de Experiência</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="animate-on-scroll" style={{animationDelay: '0.3s'}}>
-                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Equipe Infostore" className="rounded-lg shadow-lg hover-lift glow" />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Contact Section */}
-            <section id="contacto" className="py-16 gradient-bg text-white relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="text-center mb-12 animate-on-scroll">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Entre em <span className="text-yellow-300">Contacto</span></h2>
-                        <p className="text-xl text-blue-100">Estamos aqui para ajudar com suas necessidades tecnológicas</p>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="text-center animate-on-scroll hover-lift">
-                            <div className="bg-white text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 animate-bounce-in glow">
-                                <i className="fas fa-phone text-2xl"></i>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Telefone</h3>
-                            <p className="text-blue-100">+244 926 625 296</p>
-                            <a href="tel:+244926625296" className="inline-block mt-2 bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105">
-                                Ligar Agora
-                            </a>
-                        </div>
-
-                        <div className="text-center animate-on-scroll hover-lift" style={{animationDelay: '0.2s'}}>
-                            <div className="bg-white text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 animate-bounce-in glow">
-                                <i className="fas fa-envelope text-2xl"></i>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Email</h3>
-                            <p className="text-blue-100">info@infostore.ao</p>
-                            <a href="mailto:info@infostore.ao" className="inline-block mt-2 bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105">
-                                Enviar Email
-                            </a>
-                        </div>
-
-                        <div className="text-center animate-on-scroll hover-lift" style={{animationDelay: '0.4s'}}>
-                            <div className="bg-white text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 animate-bounce-in glow">
-                                <i className="fas fa-map-marker-alt text-2xl"></i>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Localização</h3>
-                            <p className="text-blue-100">Luanda, Angola</p>
-                            <button className="mt-2 bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105" onClick={() => window.open('https://maps.google.com/?q=Luanda,Angola', '_blank')}>
-                                Ver no Mapa
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="text-center mt-12 animate-on-scroll">
-                        <h3 className="text-2xl font-semibold mb-6">Siga-nos nas Redes Sociais</h3>
-                        <div className="flex justify-center space-x-6">
-                            <a href="https://www.facebook.com/profile.php?id=100088151083799" className="bg-white text-primary w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-100 transition-all duration-300 hover:scale-110 hover:shadow-lg">
-                                <i className="fab fa-facebook-f text-xl"></i>
-                            </a>
-                            <a href="https://www.instagram.com/infostore_tecnology/" className="bg-white text-primary w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-100 transition-all duration-300 hover:scale-110 hover:shadow-lg">
-                                <i className="fab fa-instagram text-xl"></i>
-                            </a>
-                            <a href="https://wa.me/244926625296" target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-green-600 transition-all duration-300 hover:scale-110 hover:shadow-lg">
-                                <i className="fab fa-whatsapp text-xl"></i>
-                            </a>
-                        </div>
-                        <p className="text-blue-100 mt-4 animate-fade-in">@infostore_tecnology</p>
-                    </div>
-                </div>
-            </section>
-
-            {/* Newsletter Section */}
-            <section className="py-16 bg-gray-100">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <div className="animate-on-scroll">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Fique por Dentro das <span className="text-primary">Novidades</span></h2>
-                        <p className="text-gray-600 mb-8">Receba as últimas ofertas e novidades tecnológicas diretamente no seu WhatsApp</p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            <a href="https://wa.me/244926625296?text=Olá! Quero receber as novidades da Infostore." target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-600 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                                <i className="fab fa-whatsapp mr-2"></i>Receber Novidades
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            </section> */}
 
             {/* WhatsApp Float Button */}
-            <a href="https://wa.me/244926625296" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-all duration-300 z-50 animate-bounce-in hover:scale-110">
-                <i className="fab fa-whatsapp text-2xl"></i>
+            <a 
+                href="https://wa.me/244926625296" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="fixed bottom-6 right-6 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 transition-all hover:scale-110 z-50 animate-bounce"
+            >
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
             </a>
-
-            {/* Back to Top Button */}
-            <button id="backToTop" className="fixed bottom-6 left-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-primary-dark transition-all duration-300 z-50 opacity-0 pointer-events-none">
-                <i className="fas fa-arrow-up"></i>
-            </button>
         </div>
     );
 };

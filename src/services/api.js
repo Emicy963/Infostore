@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: 'http://localhost:8000/api/v1',
 });
 
 // Interceptor para adicionar o token JWT em todas as requisições
 api.interceptors.request.use(config => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem('accessToken');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -24,14 +24,14 @@ api.interceptors.response.use(
         originalRequest._retry = true;
         
         try {
-            const refreshToken = localStorage.getItem("refreshToken");
+            const refreshToken = localStorage.getItem('refreshToken');
             if (refreshToken) {
-            const response = await axios.post("http://localhost:8000/api/token/refresh/", {
+            const response = await axios.post('http://localhost:8000/api/v1/auth/token/refresh/', {
                 refresh: refreshToken
             });
             
             const { access } = response.data;
-            localStorage.setItem("accessToken", access);
+            localStorage.setItem('accessToken', access);
             
             // Atualiza o header da requisição original com o novo token
             originalRequest.headers.Authorization = `Bearer ${access}`;
@@ -39,9 +39,9 @@ api.interceptors.response.use(
             }
         } catch (refreshError) {
             // Se não conseguir renovar o token, desloga o usuário
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            window.location.href = "/login";
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            window.location.href = '/login';
             return Promise.reject(refreshError);
         }
         }

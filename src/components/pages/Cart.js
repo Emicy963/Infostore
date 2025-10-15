@@ -29,8 +29,8 @@ const Cart = () => {
     };
 
     const calculateTotal = () => {
-        if (!cart || !cart.items) return 0;
-        return cart.items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+        if (!cart || !cart.cartitems) return 0;
+        return cart.cartitems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
     };
 
     if (loading) {
@@ -55,19 +55,21 @@ const Cart = () => {
 
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">Seu Carrinho</h1>
 
-                {cart && cart.items && cart.items.length > 0 ? (
+                {cart && cart.cartitems && cart.cartitems.length > 0 ? (
                     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                         <div className="md:flex">
                             <div className="md:w-2/3 p-6">
                                 <div className="space-y-6">
-                                    {cart.items.map((item) => (
+                                    {cart.cartitems.map((item) => (
                                         <div key={item.id} className="flex items-center border-b pb-6">
                                             <img src={item.product.image} alt={item.product.name} className="w-24 h-24 object-cover rounded-lg" />
                                             <div className="ml-4 flex-1">
                                                 <h3 className="text-lg font-semibold">{item.product.name}</h3>
                                                 <p className="text-gray-600">{item.product.description}</p>
                                                 <div className="flex items-center mt-2">
-                                                    <span className="text-xl font-bold text-primary">{item.product.price} Kz</span>
+                                                    <span className="text-xl font-bold text-primary">
+                                                        {item.product.price.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div className="flex flex-col items-end">
@@ -104,15 +106,15 @@ const Cart = () => {
                                 <div className="space-y-4 mb-6">
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
-                                        <span>{calculateTotal()} Kz</span>
+                                        <span>{calculateTotal().toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Entrega</span>
-                                        <span>0 Kz</span>
+                                        <span>Grátis</span>
                                     </div>
                                     <div className="flex justify-between font-bold text-lg">
                                         <span>Total</span>
-                                        <span>{calculateTotal()} Kz</span>
+                                        <span>{calculateTotal().toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}</span>
                                     </div>
                                 </div>
                                 

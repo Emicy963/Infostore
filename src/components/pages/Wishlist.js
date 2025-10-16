@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { FaHeart, FaShoppingCart, FaTrash, FaArrowLeft } from "react-icons/fa";
 import { useCart } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import api from "../../services/api";
 
 const Wishlist = () => {
@@ -11,9 +12,9 @@ const Wishlist = () => {
     const [error, setError] = useState(null);
     const { addToCart } = useCart();
     const { user } = useAuth();
+    const { darkMode } = useTheme();
 
     useEffect(() => {
-        // Se não há usuário autenticado, não carrega a lista de desejos
         if (!user) {
             setLoading(false);
             return;
@@ -49,26 +50,34 @@ const Wishlist = () => {
 
     if (loading) {
         return (
-            <div className="pt-16 pb-12 bg-gray-50 min-h-screen flex items-center justify-center">
+            <div className={`pt-16 pb-12 min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-                    <p className="mt-4 text-gray-600">Carregando lista de desejos...</p>
+                    <p className={`mt-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Carregando lista de desejos...
+                    </p>
                 </div>
             </div>
         );
     }
 
-    // Se não há usuário autenticado, mostra mensagem para fazer login
     if (!user) {
         return (
-            <div className="pt-16 pb-12 bg-gray-50 min-h-screen flex items-center justify-center">
-                <div className="bg-white rounded-lg shadow-lg p-12 text-center max-w-md">
+            <div className={`pt-16 pb-12 min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-12 text-center max-w-md`}>
                     <div className="flex justify-center mb-6">
-                        <FaHeart className="text-6xl text-gray-300" />
+                        <FaHeart className={`text-6xl ${darkMode ? 'text-gray-600' : 'text-gray-300'}`} />
                     </div>
-                    <h2 className="text-2xl font-semibold mb-4">Acesso Restrito</h2>
-                    <p className="text-gray-600 mb-6">Você precisa estar logado para ver sua lista de desejos.</p>
-                    <Link to="/login" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block">
+                    <h2 className={`text-2xl font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                        Acesso Restrito
+                    </h2>
+                    <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Você precisa estar logado para ver sua lista de desejos.
+                    </p>
+                    <Link 
+                        to="/login" 
+                        className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block"
+                    >
                         Fazer Login
                     </Link>
                 </div>
@@ -77,15 +86,20 @@ const Wishlist = () => {
     }
 
     return (
-        <div className="pt-16 pb-12 bg-gray-50 min-h-screen">
+        <div className={`pt-16 pb-12 min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-6">
-                    <Link to="/products" className="inline-flex items-center text-primary hover:text-primary-dark">
-                        <i className="fas fa-arrow-left mr-2"></i> Continuar comprando
+                    <Link 
+                        to="/products" 
+                        className={`inline-flex items-center ${darkMode ? 'text-gray-300 hover:text-primary' : 'text-primary hover:text-primary-dark'}`}
+                    >
+                        <FaArrowLeft className="mr-2" /> Continuar comprando
                     </Link>
                 </div>
                 
-                <h1 className="text-3xl font-bold text-gray-900 mb-8">Sua Lista de Desejos</h1>
+                <h1 className={`text-3xl font-bold mb-8 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Sua Lista de Desejos
+                </h1>
                 
                 {error && (
                     <div className="bg-red-50 text-red-700 p-4 rounded-lg mb-6">
@@ -94,11 +108,16 @@ const Wishlist = () => {
                 )}
                 
                 {wishlistItems.length > 0 ? (
-                    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg overflow-hidden`}>
                         <div className="p-6">
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {wishlistItems.map((item) => (
-                                    <div key={item.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div 
+                                        key={item.id} 
+                                        className={`border rounded-lg p-4 hover:shadow-md transition-shadow ${
+                                            darkMode ? 'border-gray-700' : 'border-gray-200'
+                                        }`}
+                                    >
                                         <div className="relative">
                                             <img 
                                                 src={item.product.image} 
@@ -112,7 +131,9 @@ const Wishlist = () => {
                                                 <FaTrash />
                                             </button>
                                         </div>
-                                        <h3 className="text-lg font-semibold mb-2">{item.product.name}</h3>
+                                        <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                                            {item.product.name}
+                                        </h3>
                                         <p className="text-xl font-bold text-primary mb-4">
                                             {item.product.price.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
                                         </p>
@@ -121,11 +142,15 @@ const Wishlist = () => {
                                                 onClick={() => handleAddToCart(item.product.id)}
                                                 className="flex-1 bg-primary text-white py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors flex items-center justify-center"
                                             >
-                                                <FaShoppingCart className="mr-2" /> Adicionar ao Carrinho
+                                                <FaShoppingCart className="mr-2" /> Adicionar
                                             </button>
                                             <Link 
                                                 to={`/products/${item.product.slug}`}
-                                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                                                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                                                    darkMode 
+                                                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                }`}
                                             >
                                                 Ver
                                             </Link>
@@ -136,13 +161,20 @@ const Wishlist = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+                    <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-12 text-center`}>
                         <div className="flex justify-center mb-6">
-                            <FaHeart className="text-6xl text-gray-300" />
+                            <FaHeart className={`text-6xl ${darkMode ? 'text-gray-600' : 'text-gray-300'}`} />
                         </div>
-                        <h2 className="text-2xl font-semibold mb-4">Sua lista de desejos está vazia</h2>
-                        <p className="text-gray-600 mb-6">Adicione produtos à sua lista de desejos para não perdê-los.</p>
-                        <Link to="/products" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block">
+                        <h2 className={`text-2xl font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                            Sua lista de desejos está vazia
+                        </h2>
+                        <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                            Adicione produtos à sua lista de desejos para não perdê-los.
+                        </p>
+                        <Link 
+                            to="/products" 
+                            className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300 inline-block"
+                        >
                             Ver Produtos
                         </Link>
                     </div>

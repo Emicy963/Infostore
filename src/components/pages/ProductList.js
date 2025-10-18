@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../common/ProductCard';
 import api from '../../services/api';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -9,6 +10,7 @@ const ProductList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const { darkMode } = useTheme();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -51,26 +53,26 @@ const ProductList = () => {
 
     if (loading) {
         return (
-            <div className="pt-16 pb-12 bg-gray-50 min-h-screen flex items-center justify-center">
+            <div className={`pt-16 pb-12 min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-                    <p className="mt-4 text-gray-600">Carregando produtos...</p>
+                    <p className={`mt-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Carregando produtos...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="pt-16 pb-12 bg-gray-50 min-h-screen">
+        <div className={`pt-16 pb-12 min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-6">
-                    <Link to="/" className="inline-flex items-center text-primary hover:text-primary-dark">
+                    <Link to="/" className={`inline-flex items-center ${darkMode ? 'text-gray-300 hover:text-primary' : 'text-primary hover:text-primary-dark'}`}>
                         <i className="fas fa-arrow-left mr-2"></i> Voltar para a página inicial
                     </Link>
                 </div>
                 
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4">Todos os Produtos</h1>
+                    <h1 className={`text-3xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Todos os Produtos</h1>
                     
                     <form onSubmit={handleSearch} className="mb-6">
                         <div className="relative">
@@ -78,11 +80,17 @@ const ProductList = () => {
                                 type="text"
                                 name="search"
                                 placeholder="Buscar produtos..."
-                                className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                className={`w-full px-4 py-2 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                                    darkMode 
+                                        ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' 
+                                        : 'border-gray-300'
+                                } border`}
                             />
                             <button
                                 type="submit"
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary"
+                                className={`absolute right-3 top-1/2 transform -translate-y-1/2 ${
+                                    darkMode ? 'text-gray-400 hover:text-primary' : 'text-gray-400 hover:text-primary'
+                                }`}
                             >
                                 <i className="fas fa-search"></i>
                             </button>
@@ -109,6 +117,8 @@ const ProductList = () => {
                                             className={`px-4 py-2 rounded-lg ${
                                                 currentPage === page
                                                     ? 'bg-primary text-white'
+                                                    : darkMode
+                                                    ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                                                     : 'bg-white text-gray-700 hover:bg-gray-100'
                                             }`}
                                         >
@@ -120,9 +130,9 @@ const ProductList = () => {
                         )}
                     </>
                 ) : (
-                    <div className="bg-white rounded-lg shadow-lg p-12 text-center">
-                        <h2 className="text-2xl font-semibold mb-4">Nenhum produto encontrado</h2>
-                        <p className="text-gray-600 mb-6">
+                    <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-12 text-center`}>
+                        <h2 className={`text-2xl font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Nenhum produto encontrado</h2>
+                        <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                             {searchQuery 
                                 ? `Não encontramos resultados para "${searchQuery}".`
                                 : 'No momento não temos produtos disponíveis.'

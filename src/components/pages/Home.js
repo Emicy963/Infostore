@@ -62,16 +62,20 @@ const Home = () => {
         const fetchProducts = async () => {
             try {
                 const response = await api.get("/products/");
-                setProducts(response.data);
+                // Verificar se a resposta tem results (paginação) ou é array direto
+                const productsData = response.data.results || response.data;
+                setProducts(Array.isArray(productsData) ? productsData : []);
             } catch (error) {
                 console.error("Error fetching products:", error);
+                setProducts([]); // Garantir que seja array vazio em caso de erro
             }
         };
 
         const fetchCategories = async () => {
             try {
                 const response = await api.get("/categories/");
-                setCategories(response.data);
+                const categoriesData = response.data;
+                setCategories(Array.isArray(categoriesData) ? categoriesData : sampleCategories);
             } catch (error) {
                 console.error("Error fetching categories:", error);
                 setCategories(sampleCategories);
@@ -84,8 +88,8 @@ const Home = () => {
     }, [fetchCart]);
 
     const filteredProducts = selectedCategory 
-        ? products.filter(p => p.category === selectedCategory)
-        : products;
+        ? (Array.isArray(products) ? products.filter(p => p.category === selectedCategory) : [])
+        : (Array.isArray(products) ? products : []);
 
     const nextSlide = () => setCurrentSlide((prev) => (prev === promoBanners.length - 1 ? 0 : prev + 1));
     const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? promoBanners.length - 1 : prev - 1));

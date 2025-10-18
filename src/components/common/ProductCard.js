@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaRegHeart } from "react-icons/fa";
 import { useCart } from "../../contexts/CartContext";
 import { useTheme } from "../../contexts/ThemeContext";
+import api from "../../services/api";
 
 const ProductCard = memo(({ product }) => {
   const { addToCart } = useCart();
@@ -23,10 +24,15 @@ const ProductCard = memo(({ product }) => {
     }
   };
 
-  const handleToggleWishlist = (e) => {
+  const handleToggleWishlist = async (e) => {
     e.preventDefault();
-    setIsWishlisted(!isWishlisted);
-    // Add a lógica para salvar na wishlist da API
+    try {
+        // Se já está na wishlist, remover; caso contrário, adicionar
+        await api.post('/wishlist/add/', { product_id: product.id });
+        setIsWishlisted(!isWishlisted);
+    } catch (error) {
+        console.error('Erro ao adicionar/remover da wishlist:', error);
+    }
   };
 
   return (

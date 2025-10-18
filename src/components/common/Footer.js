@@ -42,21 +42,20 @@ const Footer = () => {
             {/* Company Info */}
             <div>
               <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center mr-3">
-                  <img 
-                    src="/logo.png" 
-                    alt="Infostore" 
-                    className="w-10 h-10 object-contain"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                  <span className="hidden text-white font-bold text-lg items-center justify-center">IS</span>
+                <div className="relative w-12 h-12 flex items-center justify-center mr-3">
+                    <img 
+                        src="/logo.png" 
+                        alt="Infostore" 
+                        className="w-12 h-12 object-contain"
+                    />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xl font-bold text-white">Infostore</span>
-                  <span className="text-xs text-blue-400 font-medium">Tech & Solutions</span>
+                    <img 
+                        src="/infostore-text.png" 
+                        alt="Infostore" 
+                        className="h-7 object-contain"
+                    />
+                    <span className="text-xs text-blue-400 font-medium">Tech & Solutions</span>
                 </div>
               </div>
               <p className={`${darkMode ? 'text-gray-400' : 'text-gray-400'} mb-4 text-sm leading-relaxed`}>

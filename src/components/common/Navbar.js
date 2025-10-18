@@ -63,25 +63,22 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3 group">
-              <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center transform group-hover:scale-105 transition-transform">
-                <img 
-                  src="/logo.png" 
-                  alt="Infostore" 
-                  className="w-8 h-8 object-contain"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-                <span className="hidden text-white font-bold text-lg">IS</span>
+              <div className="relative w-10 h-10 flex items-center justify-center transform group-hover:scale-105 transition-transform">
+                  <img 
+                      src="/logo.png" 
+                      alt="Infostore" 
+                      className="w-10 h-10 object-contain"
+                  />
               </div>
               <div className="flex flex-col">
-                <span className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                  Infostore
-                </span>
-                <span className="text-xs text-primary font-medium">Tecnologia & Soluções</span>
+                  <img 
+                      src="/infostore-text.png" 
+                      alt="Infostore" 
+                      className="h-6 object-contain"
+                  />
+                  <span className="text-xs text-primary font-medium">Tecnologia & Soluções</span>
               </div>
-            </Link>
+          </Link>
           </div>
           
           {/* Desktop Navigation */}

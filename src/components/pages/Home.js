@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Star, Heart, TrendingUp, Zap, Package } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, TrendingUp, Zap, Package } from "lucide-react";
 import api from "../../services/api";
 import { useCart } from "../../contexts/CartContext";
 import { useTheme } from "../../contexts/ThemeContext";
+import ProductCard from "../common/ProductCard"
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -248,90 +249,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {filteredProducts.map((product) => (
-                            <div 
-                                key={product.id}
-                                className={`${
-                                    darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'
-                                } rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer border`}
-                            >
-                                <div className={`relative overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                                    <img 
-                                        src={product.image} 
-                                        alt={product.name}
-                                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                                        loading="lazy"
-                                    />
-                                    {product.badge && (
-                                        <span className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                                            {product.badge}
-                                        </span>
-                                    )}
-                                    {product.discount && (
-                                        <span className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                                            -{product.discount}%
-                                        </span>
-                                    )}
-                                    {!product.inStock && (
-                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                                            <span className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold">
-                                                Esgotado
-                                            </span>
-                                        </div>
-                                    )}
-                                    <button className="absolute top-3 right-3 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-lg hover:scale-110">
-                                        <Heart size={18} className="text-red-500" />
-                                    </button>
-                                </div>
-                                
-                                <div className="p-4">
-                                    <h3 className={`font-semibold mb-2 line-clamp-2 h-12 group-hover:text-primary transition-colors ${
-                                        darkMode ? 'text-gray-200' : 'text-gray-900'
-                                    }`}>
-                                        {product.name}
-                                    </h3>
-                                    
-                                    <div className="flex items-center gap-1 mb-3">
-                                        <div className="flex">
-                                            {[...Array(5)].map((_, i) => (
-                                                <Star 
-                                                    key={i} 
-                                                    size={14} 
-                                                    className={i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
-                                                />
-                                            ))}
-                                        </div>
-                                        <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                                            ({product.reviews})
-                                        </span>
-                                    </div>
-
-                                    <div className="flex items-end justify-between mb-3">
-                                        <div>
-                                            {product.discount && (
-                                                <div className={`text-sm line-through ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                    {Math.round(parseFloat(product.price.replace(/\./g, '')) / (1 - product.discount / 100)).toLocaleString()} Kz
-                                                </div>
-                                            )}
-                                            <div className="text-2xl font-bold text-primary">
-                                                {product.price} Kz
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button 
-                                        disabled={!product.inStock}
-                                        className={`w-full py-2.5 rounded-lg font-semibold transition-all duration-300 ${
-                                            product.inStock 
-                                                ? 'bg-primary text-white hover:bg-primary-dark hover:shadow-lg' 
-                                                : darkMode
-                                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                        }`}
-                                    >
-                                        {product.inStock ? 'Adicionar ao Carrinho' : 'Indisponível'}
-                                    </button>
-                                </div>
-                            </div>
+                            <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
 

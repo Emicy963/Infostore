@@ -10,6 +10,7 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
+    const [isWishlisted, setIsWishlisted] = useState(false);
     const { addToCart } = useCart();
     const { darkMode } = useTheme();
 
@@ -28,6 +29,22 @@ const ProductDetail = () => {
         fetchProduct();
     }, [slug]);
 
+    useEffect(() => {
+        const checkWishlist = async () => {
+            try {
+                const response = await api.get('/wishlist/');
+                const isInWishlist = response.data.some(item => item.product.id === product?.id);
+                setIsWishlisted(isInWishlist);
+            } catch (error) {
+                console.error('Erro ao verificar wishlist:', error);
+            }
+        };
+        
+        if (product) {
+            checkWishlist();
+        }
+    }, [product]);
+
     const handleAddToCart = () => {
         for (let i = 0; i < quantity; i++) {
             addToCart(product.id);
@@ -38,6 +55,19 @@ const ProductDetail = () => {
         const value = parseInt(e.target.value);
         if (value >= 1) {
             setQuantity(value);
+        }
+    };
+
+    const handleToggleWishlist = async () => {
+        try {
+            const response = await api.post('/wishlist/add/', { product_id: product.id });
+            if (response.status === 204) {
+                setIsWishlisted(false);
+            } else {
+                setIsWishlisted(true);
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar/remover da wishlist:', error);
         }
     };
 
@@ -121,13 +151,18 @@ const ProductDetail = () => {
                                     >
                                         <FaShoppingCart className="mr-2" /> Adicionar ao Carrinho
                                 </button>
-                                <button className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center ${
-                                    darkMode 
-                                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
+                                <button 
+                                    onClick={handleToggleWishlist}
+                                    className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center ${
+                                        isWishlisted
+                                            ? 'bg-red-500 text-white hover:bg-red-600'
+                                            : darkMode 
+                                            ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
                                 >
-                                    <FaHeart className="mr-2" /> Favoritar
+                                    <FaHeart className={`mr-2 ${isWishlisted ? 'text-white' : ''}`} /> 
+                                    {isWishlisted ? 'Remover dos Favoritos' : 'Favoritar'}
                                 </button>
                             </div>
 

@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaRegHeart } from "react-icons/fa";
 import { useCart } from "../../contexts/CartContext";
@@ -10,6 +10,21 @@ const ProductCard = memo(({ product }) => {
   const { darkMode } = useTheme();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  useEffect(() => {
+    // Verificar se o produto já está na wishlist ao carregar
+      const checkWishlist = async () => {
+          try {
+              const response = await api.get('/wishlist/');
+              const isInWishlist = response.data.some(item => item.product.id === product.id);
+              setIsWishlisted(isInWishlist);
+          } catch (error) {
+              console.error('Erro ao verificar wishlist:', error);
+          }
+      };
+      
+      checkWishlist();
+  }, [product.id]);
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -25,14 +40,19 @@ const ProductCard = memo(({ product }) => {
   };
 
   const handleToggleWishlist = async (e) => {
-    e.preventDefault();
-    try {
-        // Se já está na wishlist, remover; caso contrário, adicionar
-        await api.post('/wishlist/add/', { product_id: product.id });
-        setIsWishlisted(!isWishlisted);
-    } catch (error) {
-        console.error('Erro ao adicionar/remover da wishlist:', error);
-    }
+      e.preventDefault();
+      try {
+          // A API toggle automaticamente (adiciona se não existe, remove se existe)
+          const response = await api.post('/wishlist/add/', { product_id: product.id });
+          // A API retorna o item se foi criado, ou 204 se foi removido
+          if (response.status === 204) {
+              setIsWishlisted(false);
+          } else {
+              setIsWishlisted(true);
+          }
+      } catch (error) {
+          console.error('Erro ao adicionar/remover da wishlist:', error);
+      }
   };
 
   return (

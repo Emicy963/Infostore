@@ -73,7 +73,7 @@ const Profile = () => {
     setMessage('');
     
     try {
-      const response = await api.put("/api/profile/", formData);
+      const response = await api.put("/auth/profile/", formData);
       setProfile(response.data);
       setIsEditing(false);
       setMessage("Perfil atualizado com sucesso!");
@@ -100,7 +100,7 @@ const Profile = () => {
     }
 
     try {
-      await api.post("/api/change-password/", {
+      await api.post("/auth/change-password/", {
         current_password: passwordData.currentPassword,
         new_password: passwordData.newPassword
       });

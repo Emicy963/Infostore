@@ -61,7 +61,7 @@ const Home = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await api.get("/product_list");
+                const response = await api.get("/products/");
                 setProducts(response.data);
             } catch (error) {
                 console.error("Error fetching products:", error);
@@ -70,7 +70,7 @@ const Home = () => {
 
         const fetchCategories = async () => {
             try {
-                const response = await api.get("/category_list");
+                const response = await api.get("/categories/");
                 setCategories(response.data);
             } catch (error) {
                 console.error("Error fetching categories:", error);

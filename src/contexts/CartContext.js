@@ -17,27 +17,23 @@ export const CartProvider = ({ children }) => {
 
     const fetchCart = async () => {
         try {
-        let response;
-        if (user) {
-            // Usuário autenticado - não precisa de código
-            response = await api.get('/cart/');
-        } else {
-            // Usuário anônimo - precisa do código
-            response = await api.get('/cart/', { params: { code: cartCode } });
-        }
-        setCart(response.data);
+            let response;
+            if (user) {
+                // Usuário autenticado
+                response = await api.get('/cart/');
+            } else {
+                // Usuário anônimo - precisa do código
+                response = await api.get('/cart/', { params: { code: cartCode } });
+            }
+            setCart(response.data);
         } catch (error) {
-        console.error('Error fetching cart:', error);
-        // Se o carrinho não existir, criar um novo
-        try {
-            const newCartResponse = await api.post('/cart/', {});
-            const newCart = newCartResponse.data;
-            setCartCode(newCart.cart_code);
-            localStorage.setItem('cart_code', newCart.cart_code);
-            setCart(newCart);
-        } catch (createError) {
-            console.error('Error creating cart:', createError);
-        }
+            // Se o carrinho não existir, NÃO criar automaticamente
+            // Apenas definir cart como null
+            if (error.response?.status === 404 || error.response?.status === 400) {
+                setCart(null);
+            } else {
+                console.error('Error fetching cart:', error);
+            }
         }
     };
 
@@ -61,23 +57,31 @@ export const CartProvider = ({ children }) => {
     // Quando o usuário faz login, mesclar o carrinho local com o carrinho do usuário
     useEffect(() => {
         if (user) {
-        mergeCarts();
+            mergeCarts();
         } else {
-        // Se o usuário não está autenticado, usar o carrinho local
-        fetchCart();
+            fetchCart();
         }
     }, [user]);
 
     const addToCart = async (productId, quantity = 1) => {
         try {
-        await api.post('/cart/add/', {
-            cart_code: cartCode,
-            product_id: productId,
-            quantity
-        });
-        fetchCart();
+            // Se não existe carrinho, criar primeiro
+            if (!cart) {
+                const createResponse = await api.post('/cart/', {});
+                const newCart = createResponse.data.data || createResponse.data;
+                setCart(newCart);
+                setCartCode(newCart.cart_code);
+                localStorage.setItem('cart_code', newCart.cart_code);
+            }
+            
+            await api.post('/cart/add/', {
+                cart_code: cartCode,
+                product_id: productId,
+                quantity
+            });
+            fetchCart();
         } catch (error) {
-        console.error('Error adding to cart:', error);
+            console.error('Error adding to cart:', error);
         }
     };
 

@@ -11,7 +11,7 @@ const CategoryList = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await api.get("/category_list");
+                const response = await api.get("/categories/");
                 setCategories(response.data);
                 setLoading(false);
             } catch (error) {

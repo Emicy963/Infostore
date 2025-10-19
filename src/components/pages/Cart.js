@@ -20,6 +20,11 @@ const Cart = () => {
         loadCart();
     }, [fetchCart]);
 
+    useEffect(() => {
+        console.log('Cart state:', cart);
+        console.log('Cart items:', cart?.cartitems);
+    }, [cart]);
+
     const handleQuantityChange = (itemId, newQuantity) => {
         if (newQuantity >= 1) {
             updateCartItemQuantity(itemId, newQuantity);

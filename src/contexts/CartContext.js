@@ -61,27 +61,36 @@ export const CartProvider = ({ children }) => {
         } else {
             fetchCart();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     const addToCart = async (productId, quantity = 1) => {
         try {
+            let currentCartCode = cartCode;
+            
             // Se não existe carrinho, criar primeiro
             if (!cart) {
                 const createResponse = await api.post('/cart/', {});
-                const newCart = createResponse.data.data || createResponse.data;
+                // A resposta já vem diretamente como o objeto do cart
+                const newCart = createResponse.data;
                 setCart(newCart);
+                currentCartCode = newCart.cart_code;
                 setCartCode(newCart.cart_code);
                 localStorage.setItem('cart_code', newCart.cart_code);
             }
             
+            // Usar o cart_code correto (novo ou existente)
             await api.post('/cart/add/', {
-                cart_code: cartCode,
+                cart_code: currentCartCode,
                 product_id: productId,
                 quantity
             });
-            fetchCart();
+            
+            // Atualizar o carrinho
+            await fetchCart();
         } catch (error) {
             console.error('Error adding to cart:', error);
+            throw error; // Propagar o erro para o ProductCard mostrar feedback
         }
     };
 

@@ -54,7 +54,7 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [dropdown]);
 
-  const cartItemsCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
+  const cartItemsCount = cart?.cartitems?.reduce((total, item) => total + item.quantity, 0) || 0;
 
   return (
     <nav className={`${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white'} fixed w-full z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : 'shadow-md'} border-b`}>

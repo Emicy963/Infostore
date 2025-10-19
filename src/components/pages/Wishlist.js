@@ -42,10 +42,15 @@ const Wishlist = () => {
     const handleRemoveFromWishlist = async (itemId) => {
         try {
             await api.delete(`/wishlist/${itemId}/delete/`);
-            const response = await api.get('/wishlist/');
-            setWishlistItems(response.data);
+            setWishlistItems(prev => prev.filter(item => item.id !== itemId));
         } catch (error) {
             console.error("Error removing from wishlist:", error);
+            try {
+                const response = await api.get('/wishlist/');
+                setWishlistItems(response.data);
+            } catch (err) {
+                console.error("Error fetching wishlist:", err);
+            }
         }
     };
 

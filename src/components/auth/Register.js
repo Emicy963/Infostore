@@ -47,12 +47,23 @@ const Register = () => {
             return;
         }
 
-        const result = await register(formData);
+        const cleanedData = { ...formData };
+        Object.keys(cleanedData).forEach(key => {
+            if (cleanedData[key] === '' || cleanedData[key] === null) {
+                delete cleanedData[key];
+            }
+        });
+
+        const result = await register(cleanedData);
 
         if (result.success) {
             navigate("/login", {
                 state: { message: "Registro realizado com sucesso! Faça login para continuar." }
             });
+        } else {
+            if (result.error) {
+                setFormError(result.error);
+            }
         }
     };
 

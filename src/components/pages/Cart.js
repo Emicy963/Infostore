@@ -10,6 +10,7 @@ const Cart = () => {
     const { user } = useAuth();
     const { darkMode } = useTheme();
     const [loading, setLoading] = useState(true);
+    const [updating, setUpdating] = useState(false);
 
     useEffect(() => {
         const loadCart = async () => {
@@ -25,15 +26,28 @@ const Cart = () => {
         console.log('Cart items:', cart?.cartitems);
     }, [cart]);
 
-    const handleQuantityChange = (itemId, newQuantity) => {
-        if (newQuantity >= 1) {
-            updateCartItemQuantity(itemId, newQuantity);
+    const handleQuantityChange = async (itemId, newQuantity) => {
+        if (newQuantity >= 1 && !updating) {
+            setUpdating(true);
+            try {
+                await updateCartItemQuantity(itemId, newQuantity);
+                // O fetchCart já é chamado dentro de updateCartItemQuantity
+            } finally {
+                setUpdating(false);
+            }
         }
     };
 
     const handleRemoveItem = async (itemId) => {
-        removeCartItem(itemId);
-        await fetchCart();
+        if (!updating) {
+            setUpdating(true);
+            try {
+                await removeCartItem(itemId);
+                // O fetchCart já é chamado dentro de removeCartItem
+            } finally {
+                setUpdating(false);
+            }
+        }
     };
 
     const calculateTotal = () => {

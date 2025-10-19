@@ -234,7 +234,7 @@ const Home = () => {
                                 {filteredProducts.length} produtos encontrados
                             </p>
                         </div>
-                        <select className={`px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                        {/* <select className={`px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                             darkMode 
                                 ? 'bg-gray-800 border-gray-700 text-white' 
                                 : 'bg-white border-gray-300 text-gray-900'
@@ -244,7 +244,7 @@ const Home = () => {
                             <option>Maior Preço</option>
                             <option>Mais Vendidos</option>
                             <option>Melhor Avaliados</option>
-                        </select>
+                        </select> */}
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">

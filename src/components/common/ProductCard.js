@@ -10,6 +10,7 @@ const ProductCard = memo(({ product }) => {
   const { darkMode } = useTheme();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
 
   useEffect(() => {
     let isMounted = true; // Previne memory leaks
@@ -38,31 +39,39 @@ const ProductCard = memo(({ product }) => {
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
+    if (isAddingToCart) return; // Previne múltiplos clicks
+    
     setIsAddingToCart(true);
     try {
-      await addToCart(product.id);
-      // Mostrar feedback visual
-      setTimeout(() => setIsAddingToCart(false), 1000);
+        await addToCart(product.id);
+        // Aguardar 500ms para dar tempo do backend atualizar
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setIsAddingToCart(false);
     } catch (error) {
-      console.error('Erro ao adicionar ao carrinho:', error);
-      setIsAddingToCart(false);
+        console.error('Erro ao adicionar ao carrinho:', error);
+        setIsAddingToCart(false);
     }
   };
 
   const handleToggleWishlist = async (e) => {
-      e.preventDefault();
-      try {
-          // A API toggle automaticamente (adiciona se não existe, remove se existe)
-          const response = await api.post('/wishlist/add/', { product_id: product.id });
-          // A API retorna o item se foi criado, ou 204 se foi removido
-          if (response.status === 204) {
-              setIsWishlisted(false);
-          } else {
-              setIsWishlisted(true);
-          }
-      } catch (error) {
-          console.error('Erro ao adicionar/remover da wishlist:', error);
-      }
+    e.preventDefault();
+    
+    if (isTogglingWishlist) return;
+    
+    setIsTogglingWishlist(true);
+    try {
+        const response = await api.post('/wishlist/add/', { product_id: product.id });
+        // Atualizar imediatamente o estado local
+        if (response.status === 204) {
+            setIsWishlisted(false);
+        } else {
+            setIsWishlisted(true);
+        }
+    } catch (error) {
+        console.error('Erro ao adicionar/remover da wishlist:', error);
+    } finally {
+        setIsTogglingWishlist(false);
+    }
   };
 
   return (

@@ -72,33 +72,34 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (userData) => {
+        setLoading(true);
         try {
-        setError(null);
-        const response = await api.post('/auth/register/', userData);
-        
-        // Se o registro for bem-sucedido, retornamos sucesso
-        return { success: true, data: response.data };
+            const cleanData = Object.fromEntries(
+                Object.entries(userData).filter(([_, value]) => value !== '' && value !== null)
+            );
+            
+            const response = await api.post('/auth/register/', cleanData);
+            setLoading(false);
+            return { success: true };
         } catch (err) {
-        let errorMessage = 'Registration failed';
-        
-        // Tratamento detalhado de erros
-        if (err.response) {
-            // O servidor respondeu com um status de erro
-            if (err.response.data && err.response.data.error) {
-            errorMessage = err.response.data.error;
-            } else if (err.response.status === 400) {
-            errorMessage = 'Dados inválidos. Verifique as informações e tente novamente.';
+            setLoading(false);
+            
+            // Extrair mensagens de erro específicas
+            let errorMessage = 'Erro ao registrar. Tente novamente.';
+            
+            if (err.response?.data) {
+                const errors = err.response.data;
+                // Pegar a primeira mensagem de erro
+                const firstError = Object.values(errors)[0];
+                if (Array.isArray(firstError)) {
+                    errorMessage = firstError[0];
+                } else if (typeof firstError === 'string') {
+                    errorMessage = firstError;
+                }
             }
-        } else if (err.request) {
-            // A requisição foi feita mas não houve resposta
-            errorMessage = 'Sem resposta do servidor. Verifique sua conexão.';
-        } else {
-            // Algum outro erro ocorreu
-            errorMessage = err.message;
-        }
-        
-        setError(errorMessage);
-        return { success: false, error: errorMessage };
+            
+            setError(errorMessage);
+            return { success: false, error: errorMessage };
         }
     };
 

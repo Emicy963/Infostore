@@ -6,14 +6,11 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState(null);
-    const [cartCode, setCartCode] = useState(localStorage.getItem('cart_code') || generateCartCode());
     const { user } = useAuth();
 
-    function generateCartCode() {
-        const code = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        localStorage.setItem('cart_code', code);
-        return code;
-    }
+    const [cartCode, setCartCode] = useState(() => {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    });
 
     const fetchCart = async () => {
         try {
@@ -25,14 +22,17 @@ export const CartProvider = ({ children }) => {
                 // Usuário anônimo - precisa do código
                 response = await api.get('/cart/', { params: { code: cartCode } });
             }
-            setCart(response.data);
+            if (response.data) {
+                setCart(response.data);
+            } else {
+                setCart(null)
+            }
         } catch (error) {
-            // Se o carrinho não existir, NÃO criar automaticamente
-            // Apenas definir cart como null
             if (error.response?.status === 404 || error.response?.status === 400) {
                 setCart(null);
             } else {
                 console.error('Error fetching cart:', error);
+                setCart(null);
             }
         }
     };
@@ -71,12 +71,10 @@ export const CartProvider = ({ children }) => {
             // Se não existe carrinho, criar primeiro
             if (!cart) {
                 const createResponse = await api.post('/cart/', {});
-                // A resposta já vem diretamente como o objeto do cart
                 const newCart = createResponse.data;
                 setCart(newCart);
                 currentCartCode = newCart.cart_code;
                 setCartCode(newCart.cart_code);
-                localStorage.setItem('cart_code', newCart.cart_code);
             }
             
             // Usar o cart_code correto (novo ou existente)
@@ -86,32 +84,40 @@ export const CartProvider = ({ children }) => {
                 quantity
             });
             
-            // Atualizar o carrinho
+            // IMPORTANTE: Aguardar o fetchCart terminar
             await fetchCart();
+            
+            return { success: true }; // Retornar sucesso
         } catch (error) {
             console.error('Error adding to cart:', error);
-            throw error; // Propagar o erro para o ProductCard mostrar feedback
+            throw error;
         }
     };
 
     const updateCartItemQuantity = async (itemId, quantity) => {
         try {
-        await api.put('/cart/update/', {
-            item_id: itemId,
-            quantity
-        });
-        fetchCart();
+            await api.put('/cart/update/', {
+                item_id: itemId,
+                quantity
+            });
+            // IMPORTANTE: Aguardar o fetchCart terminar
+            await fetchCart();
         } catch (error) {
-        console.error('Error updating cart item:', error);
+            console.error('Error updating cart item:', error);
+            // Mesmo com erro, tenta recarregar
+            await fetchCart();
         }
     };
 
     const removeCartItem = async (itemId) => {
         try {
             await api.delete(`/cart/item/${itemId}/delete/`);
+            // IMPORTANTE: Aguardar o fetchCart terminar
             await fetchCart();
         } catch (error) {
             console.error('Error removing cart item:', error);
+            // Mesmo com erro, tenta recarregar
+            await fetchCart();
         }
     };
 

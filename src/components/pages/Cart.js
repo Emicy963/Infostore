@@ -31,8 +31,9 @@ const Cart = () => {
         }
     };
 
-    const handleRemoveItem = (itemId) => {
+    const handleRemoveItem = async (itemId) => {
         removeCartItem(itemId);
+        await fetchCart();
     };
 
     const calculateTotal = () => {

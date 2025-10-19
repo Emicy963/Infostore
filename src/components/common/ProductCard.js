@@ -12,18 +12,28 @@ const ProductCard = memo(({ product }) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   useEffect(() => {
-    // Verificar se o produto já está na wishlist ao carregar
+    let isMounted = true; // Previne memory leaks
+
+
       const checkWishlist = async () => {
           try {
               const response = await api.get('/wishlist/');
-              const isInWishlist = response.data.some(item => item.product.id === product.id);
-              setIsWishlisted(isInWishlist);
+              if (isMounted) {
+                const isInWishlist = response.data.some(item => item.product.id === product.id);
+                setIsWishlisted(isInWishlist);
+              }
           } catch (error) {
-              console.error('Erro ao verificar wishlist:', error);
+              if (error.response?.status !== 401) {
+                console.error('Erro ao verificar wishlist:', error);
+              }
           }
       };
       
       checkWishlist();
+
+      return () => {
+        isMounted = false;
+      };
   }, [product.id]);
 
   const handleAddToCart = async (e) => {

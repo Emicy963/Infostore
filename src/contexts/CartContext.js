@@ -108,10 +108,10 @@ export const CartProvider = ({ children }) => {
 
     const removeCartItem = async (itemId) => {
         try {
-        await api.delete(`/cart/item/${itemId}/delete/`);
-        fetchCart();
+            await api.delete(`/cart/item/${itemId}/delete/`);
+            await fetchCart();
         } catch (error) {
-        console.error('Error removing cart item:', error);
+            console.error('Error removing cart item:', error);
         }
     };
 

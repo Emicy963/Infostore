@@ -58,6 +58,32 @@ api.interceptors.response.use(
             });
         }
 
+        // INVALIDAÇÃO AUTOMÁTICA: Limpar cache após mutações bem-sucedidas
+        // Isso garante que requisições GET subsequentes busquem dados frescos do servidor
+        if (['post', 'put', 'patch', 'delete'].includes(response.config.method) && 
+            response.status >= 200 && response.status < 300) {
+            
+            // Extrair a URL base (sem query params)
+            const urlBase = response.config.url.split('?')[0];
+            
+            // Invalidar cache da URL específica
+            invalidateCacheByUrl(urlBase);
+            
+            // Invalidar cache de URLs pai/relacionadas
+            // Ex: POST /cart/add/ invalida tanto /cart/add/ quanto /cart/
+            const segments = urlBase.split('/').filter(Boolean);
+            if (segments.length > 1) {
+                // Invalidar URL pai (um nível acima)
+                const parentUrl = '/' + segments.slice(0, -1).join('/') + '/';
+                invalidateCacheByUrl(parentUrl);
+            }
+            
+            // Para endpoints de autorização, invalidar o cache de perfil também
+            if (urlBase.includes('/auth/')) {
+                invalidateCacheByUrl('/auth/profile/');
+            }
+        }
+
         return response;
     },
     async error => {

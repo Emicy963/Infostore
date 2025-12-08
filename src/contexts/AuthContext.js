@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import api from '../services/api';
+import api, { clearCache } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -112,6 +112,8 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
         console.error('Error during logout:', err);
         } finally {
+        // Limpar todo o cache ao fazer logout para evitar mostrar dados do usuário anterior
+        clearCache();
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         setUser(null);

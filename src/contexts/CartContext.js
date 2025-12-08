@@ -84,7 +84,8 @@ export const CartProvider = ({ children }) => {
                 quantity
             });
             
-            // IMPORTANTE: Aguardar o fetchCart terminar
+            // IMPORTANTE: O cache de /cart/ é automaticamente invalidado pelo interceptor
+            // do axios após a requisição POST. Portanto, fetchCart() vai buscar dados frescos.
             await fetchCart();
             
             return { success: true }; // Retornar sucesso

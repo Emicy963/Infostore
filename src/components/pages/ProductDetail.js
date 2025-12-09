@@ -10,6 +10,7 @@ import {
 import api from "../../services/api";
 import { useCart } from "../../contexts/CartContext";
 import { useTheme } from "../../contexts/ThemeContext";
+import { getImageUrl, formatPrice } from "../../utils/imageHelper";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -17,6 +18,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { addToCart } = useCart();
   const { darkMode } = useTheme();
 
@@ -159,8 +161,13 @@ const ProductDetail = () => {
           <div className="md:flex">
             <div className="md:w-1/2">
               <img
-                src={product.image}
+                src={
+                  imageError
+                    ? "/placeholder-product.png"
+                    : getImageUrl(product.image)
+                }
                 alt={product.name}
+                onError={() => setImageError(true)}
                 className="w-full h-96 object-cover"
               />
             </div>
@@ -202,7 +209,7 @@ const ProductDetail = () => {
               </div>
 
               <p className="text-2xl font-bold text-primary mb-6">
-                {product.price} Kz
+                {formatPrice(product.price)} Kz
               </p>
               <p
                 className={`mb-6 ${
@@ -278,7 +285,20 @@ const ProductDetail = () => {
                     >
                       Categoria:
                     </span>{" "}
-                    {product.category}
+                    {product.category ? (
+                      typeof product.category === "object" ? (
+                        <Link
+                          to={`/categories/${product.category.slug}`}
+                          className="text-primary hover:underline"
+                        >
+                          {product.category.name}
+                        </Link>
+                      ) : (
+                        product.category
+                      )
+                    ) : (
+                      "Sem categoria"
+                    )}
                   </li>
                   <li>
                     <span

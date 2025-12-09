@@ -105,7 +105,11 @@ const Home = () => {
 
   const filteredProducts = selectedCategory
     ? Array.isArray(products)
-      ? products.filter((p) => p.category === selectedCategory)
+      ? products.filter(
+          (p) =>
+            p.category?.name === selectedCategory ||
+            p.category === selectedCategory
+        )
       : []
     : Array.isArray(products)
     ? products
